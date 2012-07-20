@@ -4,13 +4,14 @@ import static java.util.Collections.sort;
 import static java.util.Collections.unmodifiableList;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import pl.rtshadow.jtriss.column.element.ColumnElement;
 import pl.rtshadow.jtriss.column.element.ModifiableColumnElement;
 
 public class UnmodifiableColumn<T extends Comparable<T>> implements
-		SortedColumn<T> {
+		SortedColumn<T>, Iterable<ColumnElement<T>> {
 
 	private List<ColumnElement<T>> elements;
 
@@ -25,14 +26,27 @@ public class UnmodifiableColumn<T extends Comparable<T>> implements
 
 	@Override
 	public SortedColumn<T> getSubColumn(T left, T right) {
-		// TODO Auto-generated method stub
+		// TODO
 		return null;
 	}
 
 	@Override
 	public boolean contains(ColumnElement<T> element) {
-		// TODO Auto-generated method stub
-		return false;
+		if (elements.isEmpty()) {
+			return false;
+		}
+
+		return positionOf(0) <= element.getPositionInColumn()
+				&& element.getPositionInColumn() <= positionOf(elements.size() - 1);
+	}
+
+	private int positionOf(int index) {
+		return elements.get(index).getPositionInColumn();
+	}
+
+	@Override
+	public Iterator<ColumnElement<T>> iterator() {
+		return elements.iterator();
 	}
 
 	public static <T extends Comparable<T>> ColumnConstructor<T> construct() {
@@ -74,4 +88,5 @@ public class UnmodifiableColumn<T extends Comparable<T>> implements
 			hasBeenGenerated = true;
 		}
 	}
+
 }

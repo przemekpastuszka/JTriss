@@ -16,10 +16,10 @@ public class ColumnConstructorTest {
 
 	@Test
 	public void shouldGenerateAppropriateColumn() {
-		addIntegers(1, 2, 3);
+		addIntegers(3, 1, 2, 4);
 		SortedColumn<Integer> column = constructor.generate();
 
-		assertThat(column.getSize()).isEqualTo(3);
+		assertThat(column.getSize()).isEqualTo(4);
 	}
 
 	@Test(expected = IllegalStateException.class)
