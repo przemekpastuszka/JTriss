@@ -28,4 +28,19 @@ public abstract class ModifiableColumnElement<T extends Comparable<T>>
 	public int compareTo(ColumnElement<T> other) {
 		return getValue().compareTo(other.getValue());
 	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof ModifiableColumnElement) {
+			ModifiableColumnElement<T> element = (ModifiableColumnElement<T>) obj;
+			return getValue().equals(element.getValue());
+		}
+		return super.equals(obj);
+	}
+
+	@Override
+	public int hashCode() {
+		return getValue().hashCode();
+	}
 }

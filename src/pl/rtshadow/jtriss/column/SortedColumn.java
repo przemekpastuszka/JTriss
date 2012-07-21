@@ -2,7 +2,8 @@ package pl.rtshadow.jtriss.column;
 
 import pl.rtshadow.jtriss.column.element.ColumnElement;
 
-public interface SortedColumn<T extends Comparable<T>> {
+public interface SortedColumn<T extends Comparable<T>> extends
+		Iterable<ColumnElement<T>> {
 
 	int getSize();
 

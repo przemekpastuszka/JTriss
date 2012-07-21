@@ -13,7 +13,7 @@ public class BinarySearchTest {
 	List<Integer> input = asList(1, 5, 5, 7, 8, 12, 12, 19);
 
 	@Test
-	public void shouldFindApropriateIndexes() {
+	public void findsAppropriateIndexes() {
 		assertThatRangeEquals(5, 12, /**/1, 6);
 		assertThatRangeEquals(6, 11, /**/3, 4);
 		assertThatRangeEquals(13, 27, /**/7, 7);
@@ -22,7 +22,7 @@ public class BinarySearchTest {
 	}
 
 	@Test
-	public void shouldBeAwareOfEmptyRanges() {
+	public void isAwareOfEmptyRanges() {
 		assertThatRangeIsEmpty(10, 10);
 		assertThatRangeIsEmpty(-14, -4);
 		assertThatRangeIsEmpty(24, 28);
