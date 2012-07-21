@@ -1,8 +1,8 @@
 package pl.rtshadow.jtriss.column.element;
 
 public class ColumnElementFactory {
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public ColumnElement createElement(Comparable value) {
-		return new StandardColumnElement(value);
+
+	public <T extends Comparable<T>> ColumnElement<T> createElement(T value) {
+		return new StandardColumnElement<T>(value);
 	}
 }
