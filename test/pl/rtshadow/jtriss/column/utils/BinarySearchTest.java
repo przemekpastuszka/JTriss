@@ -18,6 +18,21 @@ public class BinarySearchTest {
 		assertThatRangeEquals(6, 11, /**/3, 4);
 		assertThatRangeEquals(13, 27, /**/7, 7);
 		assertThatRangeEquals(-10, 5, /**/0, 2);
+		assertThatRangeEquals(7, 7, /**/3, 3);
+	}
+
+	@Test
+	public void shouldBeAwareOfEmptyRanges() {
+		assertThatRangeIsEmpty(10, 10);
+		assertThatRangeIsEmpty(-14, -4);
+		assertThatRangeIsEmpty(24, 28);
+	}
+
+	private void assertThatRangeIsEmpty(int leftValue, int rightValue) {
+		int leftIndex = lowerBound(input, leftValue);
+		int rightIndex = upperBound(input, leftValue);
+
+		assertThat(leftIndex).isGreaterThan(rightIndex);
 	}
 
 	private void assertThatRangeEquals(int leftValue, int rightValue,
