@@ -5,14 +5,13 @@ import pl.rtshadow.jtriss.column.element.StandardColumnElement;
 import pl.rtshadow.jtriss.column.unmodifiable.ColumnConstructor;
 
 public class TestObjects {
-	public static SortedColumn<Integer> generateSortedColumnFrom(
-			Integer... integers) {
-		ColumnConstructor<Integer> constructor = new ColumnConstructor<Integer>();
+  public static SortedColumn<Integer> generateSortedColumnFrom(Integer... integers) {
+    ColumnConstructor<Integer> constructor = new ColumnConstructor<Integer>();
 
-		for (Integer integer : integers) {
-			constructor.add(new StandardColumnElement<Integer>(integer));
-		}
+    for (Integer integer : integers) {
+      constructor.add(new StandardColumnElement<Integer>(integer));
+    }
 
-		return constructor.generate();
-	}
+    return constructor.generate();
+  }
 }

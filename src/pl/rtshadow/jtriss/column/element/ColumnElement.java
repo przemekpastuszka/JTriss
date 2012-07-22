@@ -1,12 +1,9 @@
 package pl.rtshadow.jtriss.column.element;
 
-public interface ColumnElement<T extends Comparable<T>> extends
-		Comparable<ColumnElement<T>> {
+public interface ColumnElement<T extends Comparable<? super T>> extends Comparable<ColumnElement<T>> {
+  T getValue();
 
-	T getValue();
+  ColumnElement<T> getNextElementInTheRow();
 
-	ColumnElement<T> getNextElementInTheRow();
-
-	int getPositionInColumn();
-
+  int getPositionInColumn();
 }

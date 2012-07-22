@@ -1,17 +1,14 @@
 package pl.rtshadow.jtriss.column.element;
 
-public class StandardColumnElement<T extends Comparable<T>> extends
-		ModifiableColumnElement<T> {
+public class StandardColumnElement<T extends Comparable<? super T>> extends ModifiableColumnElement<T> {
+  private T value;
 
-	private T value;
+  public StandardColumnElement(T value) {
+    this.value = value;
+  }
 
-	public StandardColumnElement(T value) {
-		this.value = value;
-	}
-
-	@Override
-	public T getValue() {
-		return value;
-	}
-
+  @Override
+  public T getValue() {
+    return value;
+  }
 }

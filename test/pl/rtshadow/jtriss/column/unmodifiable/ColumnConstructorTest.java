@@ -15,31 +15,30 @@ import pl.rtshadow.jtriss.column.element.StandardColumnElement;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ColumnConstructorTest {
-	@Test
-	public void sortsElements() {
-		SortedColumn<Integer> column = generateSortedColumnFrom(3, 1, 2, 4);
+  @Test
+  public void sortsElements() {
+    SortedColumn<Integer> column = generateSortedColumnFrom(3, 1, 2, 4);
 
-		assertTheSameCollection(column.iterator(), toElementList(1, 2, 3, 4)
-				.iterator());
-	}
+    assertTheSameCollection(column.iterator(), toElementList(1, 2, 3, 4).iterator());
+  }
 
-	@Test(expected = IllegalStateException.class)
-	public void cannotGenerateColumnMultipleTimes() {
-		ColumnConstructor<Integer> constructor = new ColumnConstructor<Integer>();
+  @Test(expected = IllegalStateException.class)
+  public void cannotGenerateColumnMultipleTimes() {
+    ColumnConstructor<Integer> constructor = new ColumnConstructor<Integer>();
 
-		constructor.generate();
-		constructor.generate();
-	}
+    constructor.generate();
+    constructor.generate();
+  }
 
-	private List<StandardColumnElement<Integer>> toElementList(
-			Integer... integers) {
+  private List<StandardColumnElement<Integer>> toElementList(
+      Integer... integers) {
 
-		List<StandardColumnElement<Integer>> elements = new ArrayList<StandardColumnElement<Integer>>();
-		for (Integer integer : integers) {
-			elements.add(new StandardColumnElement<Integer>(integer));
-		}
+    List<StandardColumnElement<Integer>> elements = new ArrayList<StandardColumnElement<Integer>>();
+    for (Integer integer : integers) {
+      elements.add(new StandardColumnElement<Integer>(integer));
+    }
 
-		return elements;
-	}
+    return elements;
+  }
 
 }
