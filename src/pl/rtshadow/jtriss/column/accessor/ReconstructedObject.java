@@ -11,6 +11,10 @@ public class ReconstructedObject<T extends Comparable<? super T>> {
     this.nextElementInRow = nextElementInRow;
   }
 
+  void setNextElementInRow(ColumnElement<T> nextElementInRow) {
+    this.nextElementInRow = nextElementInRow;
+  }
+
   public Object getObject() {
     return object;
   }

@@ -6,7 +6,7 @@ public class ColumnElementFactory {
 
   public static <T extends Comparable<? super T>> ModifiableColumnElement<T> createElement(Object value) {
     if (negate(value instanceof Comparable)) {
-      throw new IllegalStateException("Argument passed as value is not comparable");
+      throw new IllegalArgumentException("Expected instance of java.lang.Comparable, got: " + value.getClass());
     }
 
     @SuppressWarnings("unchecked")

@@ -6,31 +6,19 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static pl.rtshadow.jtriss.test.ColumnElementGenerator.element;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import pl.rtshadow.jtriss.column.ColumnConstructor;
-import pl.rtshadow.jtriss.column.SortedColumn;
 import pl.rtshadow.jtriss.column.element.ColumnElement;
 import pl.rtshadow.jtriss.column.element.ModifiableColumnElement;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ScalarColumnAccessorTest {
-  ColumnAccessor accessor = ScalarColumnAccessor.INSTANCE;
-
-  @Mock
-  SortedColumn<Integer> column;
-  @Mock
-  ColumnConstructor<Integer> constructor;
-
-  @SuppressWarnings("unchecked")
-  @Test
-  public void returnsNullWhenElementNotInColumn() {
-    when(column.contains(any(ColumnElement.class))).thenReturn(false);
-
-    assertThat(accessor.reconstruct(element(7).get(), column)).isNull();
+public class ScalarColumnAccessorTest extends AbstractColumnAccessorTest {
+  @Before
+  public void setUp() {
+    accessor = ScalarColumnAccessor.INSTANCE;
   }
 
   @SuppressWarnings("unchecked")
