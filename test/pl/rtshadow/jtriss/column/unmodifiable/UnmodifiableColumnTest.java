@@ -1,6 +1,7 @@
 package pl.rtshadow.jtriss.column.unmodifiable;
 
 import static org.fest.assertions.Assertions.assertThat;
+import static pl.rtshadow.jtriss.test.ColumnElementGenerator.element;
 import static pl.rtshadow.jtriss.test.CommonAssertions.assertTheSameCollection;
 import static pl.rtshadow.jtriss.test.TestObjects.generateSortedColumnFrom;
 
@@ -9,8 +10,6 @@ import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import pl.rtshadow.jtriss.column.SortedColumn;
-import pl.rtshadow.jtriss.column.element.ModifiableColumnElement;
-import pl.rtshadow.jtriss.column.element.StandardColumnElement;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UnmodifiableColumnTest {
@@ -23,10 +22,10 @@ public class UnmodifiableColumnTest {
 
   @Test
   public void containsElementsAtAppropriatePositions() {
-    assertThat(column.contains(createElementAt(2, 2))).isTrue();
-    assertThat(column.contains(createElementAt(4, 4))).isTrue();
+    assertThat(column.contains(element(2).atPosition(2).get())).isTrue();
+    assertThat(column.contains(element(4).atPosition(4).get())).isTrue();
 
-    assertThat(column.contains(createElementAt(6, 6))).isFalse();
+    assertThat(column.contains(element(6).atPosition(6).get())).isFalse();
   }
 
   @Test
@@ -37,9 +36,11 @@ public class UnmodifiableColumnTest {
         subColumn.iterator(),
         generateSortedColumnFrom(2, 3, 4).iterator());
 
-    assertThat(subColumn.contains(createElementAt(1, 1))).isFalse();
-    assertThat(subColumn.contains(createElementAt(2, 2))).isTrue();
-    assertThat(subColumn.contains(createElementAt(4, 4))).isTrue();
+    assertThat(subColumn.contains(element(1).atPosition(1).get())).isFalse();
+    assertThat(subColumn.contains(element(2).atPosition(2).get())).isTrue();
+    assertThat(subColumn.contains(element(4).atPosition(4).get())).isTrue();
+
+    assertThat(subColumn.getElementPositionedAt(4).getPositionInColumn()).isEqualTo(4);
   }
 
   @Test
@@ -48,8 +49,8 @@ public class UnmodifiableColumnTest {
 
     assertThat(subColumn).isEmpty();
 
-    assertThat(subColumn.contains(createElementAt(1, 1))).isFalse();
-    assertThat(subColumn.contains(createElementAt(4, 4))).isFalse();
+    assertThat(subColumn.contains(element(1).atPosition(1).get())).isFalse();
+    assertThat(subColumn.contains(element(4).atPosition(4).get())).isFalse();
   }
 
   @Test(expected = UnsupportedOperationException.class)
@@ -61,12 +62,4 @@ public class UnmodifiableColumnTest {
   public void cannotModifySubColumnViaIterator() {
     column.getSubColumn(1, 3).iterator().remove();
   }
-
-  private ModifiableColumnElement<Integer> createElementAt(int value, int position) {
-    StandardColumnElement<Integer> element = new StandardColumnElement<Integer>(value);
-    element.setPosition(position);
-
-    return element;
-  }
-
 }

@@ -8,4 +8,8 @@ public interface SortedColumn<T extends Comparable<? super T>> extends Iterable<
   SortedColumn<T> getSubColumn(T left, T right);
 
   boolean contains(ColumnElement<T> element);
+
+  int getId();
+
+  ColumnElement<T> getElementPositionedAt(int index);
 }

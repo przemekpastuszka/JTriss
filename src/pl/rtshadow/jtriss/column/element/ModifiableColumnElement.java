@@ -1,9 +1,9 @@
 package pl.rtshadow.jtriss.column.element;
 
 public abstract class ModifiableColumnElement<T extends Comparable<? super T>> implements ColumnElement<T> {
-
   ColumnElement<T> nextElement;
   int position;
+  int columnId;
 
   @Override
   public ColumnElement<T> getNextElementInTheRow() {
@@ -11,8 +11,17 @@ public abstract class ModifiableColumnElement<T extends Comparable<? super T>> i
   }
 
   @Override
+  public int getColumnId() {
+    return columnId;
+  }
+
+  @Override
   public int getPositionInColumn() {
     return position;
+  }
+
+  public void setColumnId(int columnId) {
+    this.columnId = columnId;
   }
 
   public void setPosition(int position) {
@@ -40,5 +49,10 @@ public abstract class ModifiableColumnElement<T extends Comparable<? super T>> i
   @Override
   public int hashCode() {
     return getValue().hashCode();
+  }
+
+  @Override
+  public String toString() {
+    return getValue().toString();
   }
 }

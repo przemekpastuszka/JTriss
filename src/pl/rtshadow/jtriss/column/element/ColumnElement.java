@@ -6,4 +6,6 @@ public interface ColumnElement<T extends Comparable<? super T>> extends Comparab
   ColumnElement<T> getNextElementInTheRow();
 
   int getPositionInColumn();
+
+  int getColumnId();
 }
