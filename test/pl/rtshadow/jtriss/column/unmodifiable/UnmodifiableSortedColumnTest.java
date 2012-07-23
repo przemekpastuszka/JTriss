@@ -12,7 +12,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import pl.rtshadow.jtriss.column.SortedColumn;
 
 @RunWith(MockitoJUnitRunner.class)
-public class UnmodifiableColumnTest {
+public class UnmodifiableSortedColumnTest {
   SortedColumn<Integer> column = generateSortedColumnFrom(0, 1, 2, 3, 4);
 
   @Test
