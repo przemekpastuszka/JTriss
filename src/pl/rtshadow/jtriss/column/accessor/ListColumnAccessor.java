@@ -24,27 +24,31 @@ public class ListColumnAccessor<T extends Comparable<? super T>> extends Abstrac
 
   @Override
   public ReconstructedObject<T> reconstruct(ColumnElement<T> firstElement) {
-    ArrayList<T> valuesList = new ArrayList<T>();
-    ColumnElement<T> lastElement = scanListAndRetrieveValues(firstElement, valuesList);
-
-    if (valuesList.isEmpty()) {
+    ReconstructedObject<T> reconstructedListOfValues = retrieveListOfValues(firstElement);
+    if (isEmpty(reconstructedListOfValues)) {
       return null;
     }
-
-    return new ReconstructedObject<T>(valuesList, lastElement);
+    return reconstructedListOfValues;
   }
 
-  private ColumnElement<T> scanListAndRetrieveValues(ColumnElement<T> element, ArrayList<T> valuesList) {
+  private ReconstructedObject<T> retrieveListOfValues(ColumnElement<T> element) {
+    ArrayList<T> valuesList = new ArrayList<T>();
     while (column.contains(element)) {
       valuesList.add(element.getValue());
       element = element.getNextElementInTheRow();
     }
-    return element;
+    return new ReconstructedObject<T>(valuesList, element);
+  }
+
+  @SuppressWarnings("unchecked")
+  private boolean isEmpty(ReconstructedObject<T> reconstructedObject) {
+    List<T> values = (List<T>) reconstructedObject.getObject();
+    return values.isEmpty();
   }
 
   @Override
-  public ModifiableColumnElement<T> insert(Object value, ColumnElement<T> nextElement) {
-    List<T> valuesList = retrieveNonEmptyListFromObject(value);
+  public ModifiableColumnElement<T> insert(Object object, ColumnElement<T> nextElement) {
+    List<T> valuesList = retrieveNonEmptyListFrom(object);
     List<ModifiableColumnElement<T>> columnElements = mapValuesToColumnElements(valuesList);
 
     for (int i = 0; i < columnElements.size() - 1; ++i) {
@@ -70,7 +74,7 @@ public class ListColumnAccessor<T extends Comparable<? super T>> extends Abstrac
     return columnElements;
   }
 
-  private List<T> retrieveNonEmptyListFromObject(Object value) {
+  private List<T> retrieveNonEmptyListFrom(Object value) {
     if (negate(value instanceof List)) {
       throw new IllegalArgumentException("Expected instance of java.util.List, got: " + value.getClass());
     }
