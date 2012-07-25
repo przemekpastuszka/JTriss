@@ -1,8 +1,6 @@
 package pl.rtshadow.jtriss.column.element;
 
-
 public class ColumnElementFactory {
-
   public static <T extends Comparable<? super T>> ModifiableColumnElement<T>
       createElement(Class<T> type, Object value) {
 

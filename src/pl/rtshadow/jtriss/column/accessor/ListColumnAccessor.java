@@ -24,35 +24,50 @@ public class ListColumnAccessor<T extends Comparable<? super T>> extends Abstrac
 
   @Override
   public ReconstructedObject<T> reconstruct(ColumnElement<T> firstElement) {
-    ReconstructedObject<T> reconstructed = null;
     ArrayList<T> valuesList = new ArrayList<T>();
-    while (column.contains(firstElement)) {
-      if (reconstructed == null) {
-        reconstructed = new ReconstructedObject<T>(valuesList, null);
-      }
-      valuesList.add(firstElement.getValue());
-      reconstructed.setNextElementInRow(firstElement.getNextElementInTheRow());
-      firstElement = firstElement.getNextElementInTheRow();
+    ColumnElement<T> lastElement = scanListAndRetrieveValues(firstElement, valuesList);
+
+    if (valuesList.isEmpty()) {
+      return null;
     }
-    return reconstructed;
+
+    return new ReconstructedObject<T>(valuesList, lastElement);
+  }
+
+  private ColumnElement<T> scanListAndRetrieveValues(ColumnElement<T> element, ArrayList<T> valuesList) {
+    while (column.contains(element)) {
+      valuesList.add(element.getValue());
+      element = element.getNextElementInTheRow();
+    }
+    return element;
   }
 
   @Override
   public ModifiableColumnElement<T> insert(Object value, ColumnElement<T> nextElement) {
-    ModifiableColumnElement<T> lastCreatedElement = null;
-
     List<T> valuesList = retrieveNonEmptyListFromObject(value);
-    for (T singleValue : valuesList) {
-      ModifiableColumnElement<T> currentElement = createElement(type, singleValue);
-      if (lastCreatedElement != null) {
-        lastCreatedElement.setNextElement(currentElement);
-      }
-      constructor.add(currentElement);
-      lastCreatedElement = currentElement;
-    }
-    lastCreatedElement.setNextElement(nextElement);
+    List<ModifiableColumnElement<T>> columnElements = mapValuesToColumnElements(valuesList);
 
-    return lastCreatedElement;
+    for (int i = 0; i < columnElements.size() - 1; ++i) {
+      setNextElementAndAddToConstructor(columnElements.get(i), columnElements.get(i + 1));
+    }
+
+    ModifiableColumnElement<T> lastElement = columnElements.get(columnElements.size() - 1);
+    setNextElementAndAddToConstructor(lastElement, nextElement);
+
+    return lastElement;
+  }
+
+  private void setNextElementAndAddToConstructor(ModifiableColumnElement<T> currentElement, ColumnElement<T> next) {
+    currentElement.setNextElement(next);
+    constructor.add(currentElement);
+  }
+
+  private List<ModifiableColumnElement<T>> mapValuesToColumnElements(List<T> valuesList) {
+    List<ModifiableColumnElement<T>> columnElements = new ArrayList<ModifiableColumnElement<T>>(valuesList.size());
+    for (T singleValue : valuesList) {
+      columnElements.add(createElement(type, singleValue));
+    }
+    return columnElements;
   }
 
   private List<T> retrieveNonEmptyListFromObject(Object value) {
