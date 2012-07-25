@@ -11,14 +11,17 @@ import pl.rtshadow.jtriss.column.SortedColumn;
 import pl.rtshadow.jtriss.column.element.ColumnElement;
 import pl.rtshadow.jtriss.column.element.ModifiableColumnElement;
 
-public class ListColumnAccessor implements ColumnAccessor {
-  public static ListColumnAccessor INSTANCE = new ListColumnAccessor();
+public class ListColumnAccessor<T extends Comparable<? super T>> extends AbstractColumnAccessor<T> {
+  public ListColumnAccessor(ColumnConstructor<T> constructor) {
+    this.constructor = constructor;
+  }
 
-  private ListColumnAccessor() {
+  private ListColumnAccessor(SortedColumn<T> column) {
+    this.column = column;
   }
 
   @Override
-  public <T extends Comparable<? super T>> ReconstructedObject<T> reconstruct(ColumnElement<T> firstElement, SortedColumn<T> column) {
+  public ReconstructedObject<T> reconstruct(ColumnElement<T> firstElement) {
     ReconstructedObject<T> reconstructed = null;
     ArrayList<T> valuesList = new ArrayList<T>();
     while (column.contains(firstElement)) {
@@ -33,8 +36,7 @@ public class ListColumnAccessor implements ColumnAccessor {
   }
 
   @Override
-  public <T extends Comparable<? super T>>
-      ModifiableColumnElement<T> insert(Object value, ColumnElement<T> nextElement, ColumnConstructor<T> constructor) {
+  public ModifiableColumnElement<T> insert(Object value, ColumnElement<T> nextElement) {
     ModifiableColumnElement<T> lastCreatedElement = null;
 
     List<T> valuesList = retrieveNonEmptyListFromObject(value);
@@ -51,7 +53,7 @@ public class ListColumnAccessor implements ColumnAccessor {
     return lastCreatedElement;
   }
 
-  private <T> List<T> retrieveNonEmptyListFromObject(Object value) {
+  private List<T> retrieveNonEmptyListFromObject(Object value) {
     if (negate(value instanceof List)) {
       throw new IllegalArgumentException("Expected instance of java.util.List, got: " + value.getClass());
     }
@@ -66,4 +68,8 @@ public class ListColumnAccessor implements ColumnAccessor {
     return valuesList;
   }
 
+  @Override
+  public ColumnAccessor<T> subColumn(T left, T right) {
+    return new ListColumnAccessor<T>(column.getSubColumn(left, right));
+  }
 }

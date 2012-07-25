@@ -24,7 +24,7 @@ import pl.rtshadow.jtriss.column.element.ModifiableColumnElement;
 public class ListColumnAccessorTest extends AbstractColumnAccessorTest {
   @Before
   public void setUp() {
-    accessor = ListColumnAccessor.INSTANCE;
+    accessor = new ListColumnAccessor<Integer>(constructor);
   }
 
   @SuppressWarnings("unchecked")
@@ -32,11 +32,12 @@ public class ListColumnAccessorTest extends AbstractColumnAccessorTest {
   public void returnsTwoElementsFromTheSameColumn() {
     when(column.contains(any(ColumnElement.class))).thenReturn(true, true, false);
 
+    accessor.prepareStructure();
     ReconstructedObject<Integer> reconstructed =
         accessor.reconstruct(
             element(7).withNext(
                 element(8).withNext(
-                    element(9).get()).get()).get(), column);
+                    element(9).get()).get()).get());
 
     assertThat(reconstructed.getObject()).isInstanceOf(List.class);
     List<Integer> objects = (List<Integer>) reconstructed.getObject();
@@ -48,7 +49,7 @@ public class ListColumnAccessorTest extends AbstractColumnAccessorTest {
 
   @Test
   public void addsEachObjectInGivenList() {
-    ModifiableColumnElement<Integer> newElement = accessor.insert(asList(7, 8), element(9).get(), constructor);
+    ModifiableColumnElement<Integer> newElement = accessor.insert(asList(7, 8), element(9).get());
 
     assertThat(newElement).isEqualTo(element(8).get());
     assertThat(newElement.getNextElementInTheRow()).isEqualTo(element(9).get());

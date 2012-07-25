@@ -17,7 +17,7 @@ import pl.rtshadow.jtriss.column.element.ColumnElement;
 
 @RunWith(MockitoJUnitRunner.class)
 public abstract class AbstractColumnAccessorTest {
-  ColumnAccessor accessor;
+  ColumnAccessor<Integer> accessor;
 
   @Mock
   SortedColumn<Integer> column;
@@ -27,6 +27,7 @@ public abstract class AbstractColumnAccessorTest {
   @Before
   public void hasIntegerType() {
     when(constructor.getElementsType()).thenReturn(Integer.class);
+    when(constructor.generate()).thenReturn(column);
   }
 
   @SuppressWarnings("unchecked")
@@ -34,6 +35,7 @@ public abstract class AbstractColumnAccessorTest {
   public void returnsNullWhenElementNotInColumn() {
     when(column.contains(any(ColumnElement.class))).thenReturn(false);
 
-    assertThat(accessor.reconstruct(element(7).get(), column)).isNull();
+    accessor.prepareStructure();
+    assertThat(accessor.reconstruct(element(7).get())).isNull();
   }
 }

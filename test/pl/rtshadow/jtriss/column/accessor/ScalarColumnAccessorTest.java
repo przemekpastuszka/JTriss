@@ -18,7 +18,7 @@ import pl.rtshadow.jtriss.column.element.ModifiableColumnElement;
 public class ScalarColumnAccessorTest extends AbstractColumnAccessorTest {
   @Before
   public void setUp() {
-    accessor = ScalarColumnAccessor.INSTANCE;
+    accessor = new ScalarColumnAccessor<Integer>(constructor);
   }
 
   @SuppressWarnings("unchecked")
@@ -26,8 +26,9 @@ public class ScalarColumnAccessorTest extends AbstractColumnAccessorTest {
   public void returnsOnlyOneElementFromColumn() {
     when(column.contains(any(ColumnElement.class))).thenReturn(true);
 
+    accessor.prepareStructure();
     ReconstructedObject<Integer> reconstructed =
-        accessor.reconstruct(element(7).withNext(element(8).get()).get(), column);
+        accessor.reconstruct(element(7).withNext(element(8).get()).get());
 
     assertThat(reconstructed.getObject()).isEqualTo(7);
     assertThat(reconstructed.getNextElementInRow().getValue()).isEqualTo(8);
@@ -35,7 +36,7 @@ public class ScalarColumnAccessorTest extends AbstractColumnAccessorTest {
 
   @Test
   public void treatsAnyObjectAsScalar() {
-    ModifiableColumnElement<Integer> newElement = accessor.insert(7, element(8).get(), constructor);
+    ModifiableColumnElement<Integer> newElement = accessor.insert(7, element(8).get());
 
     assertThat(newElement).isEqualTo(element(7).get());
     assertThat(newElement.getNextElementInTheRow()).isEqualTo(element(8).get());

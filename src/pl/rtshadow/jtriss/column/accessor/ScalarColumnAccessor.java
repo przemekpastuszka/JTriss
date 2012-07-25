@@ -6,14 +6,17 @@ import pl.rtshadow.jtriss.column.SortedColumn;
 import pl.rtshadow.jtriss.column.element.ColumnElement;
 import pl.rtshadow.jtriss.column.element.ModifiableColumnElement;
 
-public class ScalarColumnAccessor implements ColumnAccessor {
-  public static ScalarColumnAccessor INSTANCE = new ScalarColumnAccessor();
+public class ScalarColumnAccessor<T extends Comparable<? super T>> extends AbstractColumnAccessor<T> {
+  public ScalarColumnAccessor(ColumnConstructor<T> constructor) {
+    this.constructor = constructor;
+  }
 
-  private ScalarColumnAccessor() {
+  private ScalarColumnAccessor(SortedColumn<T> column) {
+    this.column = column;
   }
 
   @Override
-  public <T extends Comparable<? super T>> ReconstructedObject<T> reconstruct(ColumnElement<T> firstElement, SortedColumn<T> column) {
+  public ReconstructedObject<T> reconstruct(ColumnElement<T> firstElement) {
     if (column.contains(firstElement)) {
       return new ReconstructedObject<T>(firstElement.getValue(), firstElement.getNextElementInTheRow());
     }
@@ -21,9 +24,7 @@ public class ScalarColumnAccessor implements ColumnAccessor {
   }
 
   @Override
-  public <T extends Comparable<? super T>>
-      ModifiableColumnElement<T> insert(Object value, ColumnElement<T> nextElement, ColumnConstructor<T> constructor) {
-
+  public ModifiableColumnElement<T> insert(Object value, ColumnElement<T> nextElement) {
     ModifiableColumnElement<T> element = createElement(constructor.getElementsType(), value);
     element.setNextElement(nextElement);
     constructor.add(element);
@@ -31,4 +32,8 @@ public class ScalarColumnAccessor implements ColumnAccessor {
     return element;
   }
 
+  @Override
+  public ColumnAccessor<T> subColumn(T left, T right) {
+    return new ScalarColumnAccessor<T>(column.getSubColumn(left, right));
+  }
 }
