@@ -24,7 +24,7 @@ public class ScalarColumnAccessor implements ColumnAccessor {
   public <T extends Comparable<? super T>>
       ModifiableColumnElement<T> insert(Object value, ColumnElement<T> nextElement, ColumnConstructor<T> constructor) {
 
-    ModifiableColumnElement<T> element = createElement(value);
+    ModifiableColumnElement<T> element = createElement(constructor.getElementsType(), value);
     element.setNextElement(nextElement);
     constructor.add(element);
 

@@ -5,6 +5,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 import static pl.rtshadow.jtriss.test.ColumnElementGenerator.element;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -15,13 +16,18 @@ import pl.rtshadow.jtriss.column.SortedColumn;
 import pl.rtshadow.jtriss.column.element.ColumnElement;
 
 @RunWith(MockitoJUnitRunner.class)
-public class AbstractColumnAccessorTest {
+public abstract class AbstractColumnAccessorTest {
   ColumnAccessor accessor;
 
   @Mock
   SortedColumn<Integer> column;
   @Mock
   ColumnConstructor<Integer> constructor;
+
+  @Before
+  public void hasIntegerType() {
+    when(constructor.getElementsType()).thenReturn(Integer.class);
+  }
 
   @SuppressWarnings("unchecked")
   @Test

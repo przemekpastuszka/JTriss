@@ -2,14 +2,12 @@ package pl.rtshadow.jtriss.column;
 
 import pl.rtshadow.jtriss.column.element.ColumnElement;
 
-public interface SortedColumn<T extends Comparable<? super T>> extends Iterable<ColumnElement<T>> {
-  int getSize();
+public interface SortedColumn<T extends Comparable<? super T>>
+    extends Iterable<ColumnElement<T>> {
 
   SortedColumn<T> getSubColumn(T left, T right);
 
   boolean contains(ColumnElement<T> element);
 
-  int getId();
-
-  ColumnElement<T> getElementPositionedAt(int index);
+  Class<T> getElementsType();
 }

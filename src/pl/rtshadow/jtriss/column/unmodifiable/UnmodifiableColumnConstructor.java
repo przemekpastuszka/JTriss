@@ -14,6 +14,17 @@ import pl.rtshadow.jtriss.column.element.ModifiableColumnElement;
 public class UnmodifiableColumnConstructor<T extends Comparable<? super T>> implements ColumnConstructor<T> {
   private List<ModifiableColumnElement<T>> elements = new ArrayList<ModifiableColumnElement<T>>();
   private boolean hasBeenGenerated = false;
+  private int id;
+  private Class<T> type;
+
+  private UnmodifiableColumnConstructor(int id, Class<T> type) {
+    this.id = id;
+    this.type = type;
+  }
+
+  public static <T extends Comparable<? super T>> UnmodifiableColumnConstructor<T> constructor(int id, Class<T> type) {
+    return new UnmodifiableColumnConstructor<T>(id, type);
+  }
 
   @Override
   public void add(ModifiableColumnElement<T> element) {
@@ -21,14 +32,14 @@ public class UnmodifiableColumnConstructor<T extends Comparable<? super T>> impl
   }
 
   @Override
-  public SortedColumn<T> generate(int id) {
+  public SortedColumn<T> generate() {
     assureFirstGeneration();
 
     sort(elements);
     setElementsPositionsAndColumnId(id);
 
     return new UnmodifiableSortedColumn<T>(
-        unmodifiableList(new ArrayList<ColumnElement<T>>(elements)), id);
+        unmodifiableList(new ArrayList<ColumnElement<T>>(elements)), type, id);
   }
 
   private void setElementsPositionsAndColumnId(int columnId) {
@@ -44,5 +55,10 @@ public class UnmodifiableColumnConstructor<T extends Comparable<? super T>> impl
       throw new IllegalStateException();
     }
     hasBeenGenerated = true;
+  }
+
+  @Override
+  public Class<T> getElementsType() {
+    return type;
   }
 }

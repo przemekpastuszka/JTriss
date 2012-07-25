@@ -13,12 +13,7 @@ import pl.rtshadow.jtriss.column.SortedColumn;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UnmodifiableSortedColumnTest {
-  SortedColumn<Integer> column = generateSortedColumnFrom(0, 1, 2, 3, 4);
-
-  @Test
-  public void hasAppropriateSize() {
-    assertThat(column.getSize()).isEqualTo(5);
-  }
+  SortedColumn<Integer> column = generateSortedColumnFrom(Integer.class, 0, 1, 2, 3, 4);
 
   @Test
   public void containsElementsAtAppropriatePositions() {
@@ -34,13 +29,11 @@ public class UnmodifiableSortedColumnTest {
 
     assertTheSameCollection(
         subColumn.iterator(),
-        generateSortedColumnFrom(2, 3, 4).iterator());
+        generateSortedColumnFrom(Integer.class, 2, 3, 4).iterator());
 
     assertThat(subColumn.contains(element(1).atPosition(1).get())).isFalse();
     assertThat(subColumn.contains(element(2).atPosition(2).get())).isTrue();
     assertThat(subColumn.contains(element(4).atPosition(4).get())).isTrue();
-
-    assertThat(subColumn.getElementPositionedAt(4).getPositionInColumn()).isEqualTo(4);
   }
 
   @Test

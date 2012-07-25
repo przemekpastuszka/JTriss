@@ -39,7 +39,7 @@ public class ListColumnAccessor implements ColumnAccessor {
 
     List<T> valuesList = retrieveNonEmptyListFromObject(value);
     for (T singleValue : valuesList) {
-      ModifiableColumnElement<T> currentElement = createElement(singleValue);
+      ModifiableColumnElement<T> currentElement = createElement(constructor.getElementsType(), singleValue);
       if (lastCreatedElement != null) {
         lastCreatedElement.setNextElement(currentElement);
       }
