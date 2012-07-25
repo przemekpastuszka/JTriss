@@ -12,12 +12,14 @@ import pl.rtshadow.jtriss.column.element.ColumnElement;
 import pl.rtshadow.jtriss.column.element.ModifiableColumnElement;
 
 public class ListColumnAccessor<T extends Comparable<? super T>> extends AbstractColumnAccessor<T> {
-  public ListColumnAccessor(ColumnConstructor<T> constructor) {
+  public ListColumnAccessor(Class<T> type, ColumnConstructor<T> constructor) {
     this.constructor = constructor;
+    this.type = type;
   }
 
-  private ListColumnAccessor(SortedColumn<T> column) {
+  private ListColumnAccessor(Class<T> type, SortedColumn<T> column) {
     this.column = column;
+    this.type = type;
   }
 
   @Override
@@ -41,7 +43,7 @@ public class ListColumnAccessor<T extends Comparable<? super T>> extends Abstrac
 
     List<T> valuesList = retrieveNonEmptyListFromObject(value);
     for (T singleValue : valuesList) {
-      ModifiableColumnElement<T> currentElement = createElement(constructor.getElementsType(), singleValue);
+      ModifiableColumnElement<T> currentElement = createElement(type, singleValue);
       if (lastCreatedElement != null) {
         lastCreatedElement.setNextElement(currentElement);
       }
@@ -70,6 +72,6 @@ public class ListColumnAccessor<T extends Comparable<? super T>> extends Abstrac
 
   @Override
   public ColumnAccessor<T> subColumn(T left, T right) {
-    return new ListColumnAccessor<T>(column.getSubColumn(left, right));
+    return new ListColumnAccessor<T>(type, column.getSubColumn(left, right));
   }
 }

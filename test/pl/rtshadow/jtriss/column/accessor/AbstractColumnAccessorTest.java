@@ -26,7 +26,6 @@ public abstract class AbstractColumnAccessorTest {
 
   @Before
   public void hasIntegerType() {
-    when(constructor.getElementsType()).thenReturn(Integer.class);
     when(constructor.generate()).thenReturn(column);
   }
 

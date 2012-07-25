@@ -11,6 +11,7 @@ public abstract class AbstractColumnAccessor<T extends Comparable<? super T>>
 
   protected SortedColumn<T> column;
   protected ColumnConstructor<T> constructor;
+  protected Class<T> type;
 
   @Override
   public Iterator<ColumnElement<T>> iterator() {

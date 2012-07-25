@@ -20,14 +20,14 @@ import pl.rtshadow.jtriss.column.element.StandardColumnElement;
 public class UnmodifiableColumnConstructorTest {
   @Test
   public void sortsElements() {
-    SortedColumn<Integer> column = generateSortedColumnFrom(Integer.class, 3, 1, 2, 4);
+    SortedColumn<Integer> column = generateSortedColumnFrom(3, 1, 2, 4);
 
     assertTheSameCollection(column.iterator(), toElementList(1, 2, 3, 4).iterator());
   }
 
   @Test(expected = IllegalStateException.class)
   public void cannotGenerateColumnMultipleTimes() {
-    ColumnConstructor<Integer> constructor = constructor(TEST_COLUMN_ID, Integer.class);
+    ColumnConstructor<Integer> constructor = constructor(TEST_COLUMN_ID);
     constructor.add(new StandardColumnElement<Integer>(5));
 
     constructor.generate();

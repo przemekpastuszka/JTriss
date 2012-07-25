@@ -18,7 +18,7 @@ import pl.rtshadow.jtriss.column.element.ModifiableColumnElement;
 public class ScalarColumnAccessorTest extends AbstractColumnAccessorTest {
   @Before
   public void setUp() {
-    accessor = new ScalarColumnAccessor<Integer>(constructor);
+    accessor = new ScalarColumnAccessor<Integer>(Integer.class, constructor);
   }
 
   @SuppressWarnings("unchecked")

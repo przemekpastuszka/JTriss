@@ -8,6 +8,4 @@ public interface SortedColumn<T extends Comparable<? super T>>
   SortedColumn<T> getSubColumn(T left, T right);
 
   boolean contains(ColumnElement<T> element);
-
-  Class<T> getElementsType();
 }

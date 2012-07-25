@@ -24,7 +24,7 @@ import pl.rtshadow.jtriss.column.element.ModifiableColumnElement;
 public class ListColumnAccessorTest extends AbstractColumnAccessorTest {
   @Before
   public void setUp() {
-    accessor = new ListColumnAccessor<Integer>(constructor);
+    accessor = new ListColumnAccessor<Integer>(Integer.class, constructor);
   }
 
   @SuppressWarnings("unchecked")

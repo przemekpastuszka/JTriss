@@ -13,12 +13,10 @@ import pl.rtshadow.jtriss.column.element.StandardColumnElement;
 public class UnmodifiableSortedColumn<T extends Comparable<? super T>> implements SortedColumn<T> {
   private List<ColumnElement<T>> elements;
   private int id;
-  private Class<T> type;
 
-  UnmodifiableSortedColumn(List<ColumnElement<T>> elements, Class<T> type, int id) {
+  UnmodifiableSortedColumn(List<ColumnElement<T>> elements, int id) {
     this.elements = elements;
     this.id = id;
-    this.type = type;
   }
 
   @Override
@@ -26,7 +24,7 @@ public class UnmodifiableSortedColumn<T extends Comparable<? super T>> implement
     int leftIndex = lowerBound(elements, new StandardColumnElement<T>(left));
     int rightIndex = upperBound(elements, new StandardColumnElement<T>(right));
 
-    return new UnmodifiableSortedColumn<T>(elements.subList(leftIndex, rightIndex + 1), type, id);
+    return new UnmodifiableSortedColumn<T>(elements.subList(leftIndex, rightIndex + 1), id);
   }
 
   @Override
@@ -47,10 +45,5 @@ public class UnmodifiableSortedColumn<T extends Comparable<? super T>> implement
 
   private int positionOf(int index) {
     return elements.get(index).getPositionInColumn();
-  }
-
-  @Override
-  public Class<T> getElementsType() {
-    return type;
   }
 }

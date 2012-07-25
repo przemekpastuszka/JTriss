@@ -7,12 +7,14 @@ import pl.rtshadow.jtriss.column.element.ColumnElement;
 import pl.rtshadow.jtriss.column.element.ModifiableColumnElement;
 
 public class ScalarColumnAccessor<T extends Comparable<? super T>> extends AbstractColumnAccessor<T> {
-  public ScalarColumnAccessor(ColumnConstructor<T> constructor) {
+  public ScalarColumnAccessor(Class<T> type, ColumnConstructor<T> constructor) {
     this.constructor = constructor;
+    this.type = type;
   }
 
-  private ScalarColumnAccessor(SortedColumn<T> column) {
+  private ScalarColumnAccessor(Class<T> type, SortedColumn<T> column) {
     this.column = column;
+    this.type = type;
   }
 
   @Override
@@ -25,7 +27,7 @@ public class ScalarColumnAccessor<T extends Comparable<? super T>> extends Abstr
 
   @Override
   public ModifiableColumnElement<T> insert(Object value, ColumnElement<T> nextElement) {
-    ModifiableColumnElement<T> element = createElement(constructor.getElementsType(), value);
+    ModifiableColumnElement<T> element = createElement(type, value);
     element.setNextElement(nextElement);
     constructor.add(element);
 
@@ -34,6 +36,6 @@ public class ScalarColumnAccessor<T extends Comparable<? super T>> extends Abstr
 
   @Override
   public ColumnAccessor<T> subColumn(T left, T right) {
-    return new ScalarColumnAccessor<T>(column.getSubColumn(left, right));
+    return new ScalarColumnAccessor<T>(type, column.getSubColumn(left, right));
   }
 }

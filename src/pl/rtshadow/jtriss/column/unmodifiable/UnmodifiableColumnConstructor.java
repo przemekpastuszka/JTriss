@@ -15,15 +15,13 @@ public class UnmodifiableColumnConstructor<T extends Comparable<? super T>> impl
   private List<ModifiableColumnElement<T>> elements = new ArrayList<ModifiableColumnElement<T>>();
   private boolean hasBeenGenerated = false;
   private int id;
-  private Class<T> type;
 
-  private UnmodifiableColumnConstructor(int id, Class<T> type) {
+  private UnmodifiableColumnConstructor(int id) {
     this.id = id;
-    this.type = type;
   }
 
-  public static <T extends Comparable<? super T>> UnmodifiableColumnConstructor<T> constructor(int id, Class<T> type) {
-    return new UnmodifiableColumnConstructor<T>(id, type);
+  public static <T extends Comparable<? super T>> UnmodifiableColumnConstructor<T> constructor(int id) {
+    return new UnmodifiableColumnConstructor<T>(id);
   }
 
   @Override
@@ -39,7 +37,7 @@ public class UnmodifiableColumnConstructor<T extends Comparable<? super T>> impl
     setElementsPositionsAndColumnId(id);
 
     return new UnmodifiableSortedColumn<T>(
-        unmodifiableList(new ArrayList<ColumnElement<T>>(elements)), type, id);
+        unmodifiableList(new ArrayList<ColumnElement<T>>(elements)), id);
   }
 
   private void setElementsPositionsAndColumnId(int columnId) {
@@ -55,10 +53,5 @@ public class UnmodifiableColumnConstructor<T extends Comparable<? super T>> impl
       throw new IllegalStateException();
     }
     hasBeenGenerated = true;
-  }
-
-  @Override
-  public Class<T> getElementsType() {
-    return type;
   }
 }
