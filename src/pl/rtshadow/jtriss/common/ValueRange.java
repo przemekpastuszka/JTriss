@@ -1,60 +1,109 @@
 package pl.rtshadow.jtriss.common;
 
+import static org.apache.commons.lang3.BooleanUtils.negate;
+
 public class ValueRange<T extends Comparable<? super T>> {
+  private T left, right;
+  private boolean leftOpen = false, rightOpen = false;
+
+  private ValueRange(T left, T right) {
+    this.left = left;
+    this.right = right;
+  }
 
   public static <T extends Comparable<? super T>> ValueRange<T> finiteRange(T left, T right) {
-    return new ValueRange<T>();
+    return new ValueRange<T>(left, right);
   }
 
   public static <T extends Comparable<? super T>> ValueRange<T> leftFiniteRange(T left) {
-    return new ValueRange<T>();
+    return new ValueRange<T>(left, null);
   }
 
   public static <T extends Comparable<? super T>> ValueRange<T> rightFiniteRange(T right) {
-    return new ValueRange<T>();
+    return new ValueRange<T>(null, right);
   }
 
   public ValueRange<T> openOnTheLeft() {
+    leftOpen = true;
     return this;
   }
 
   public ValueRange<T> openOnTheRight() {
+    rightOpen = true;
     return this;
   }
 
   public ValueRange<T> intersect(ValueRange<T> other) {
-    return null;
+    ValueRange<T> result = new ValueRange<T>(left, right);
+    result.leftOpen = leftOpen;
+    result.rightOpen = rightOpen;
+
+    if (other.isFiniteOnTheLeft()) {
+      if (isFiniteOnTheLeft() && left.compareTo(other.left) >= 0) {
+        if (left.compareTo(other.left) == 0) {
+          result.leftOpen = leftOpen || other.leftOpen;
+        }
+      } else {
+        result.left = other.left;
+        result.leftOpen = other.leftOpen;
+      }
+    }
+
+    if (other.isFiniteOnTheRight()) {
+      if (isFiniteOnTheRight() && right.compareTo(other.right) <= 0) {
+        if (right.compareTo(other.right) == 0) {
+          result.rightOpen = rightOpen || other.rightOpen;
+        }
+      } else {
+        result.right = other.right;
+        result.rightOpen = other.rightOpen;
+      }
+    }
+    return result;
   }
 
+  @SuppressWarnings("unchecked")
   public Class<T> getType() {
+    if (isFiniteOnTheLeft()) {
+      return (Class<T>) left.getClass();
+    }
+    if (isFiniteOnTheRight()) {
+      return (Class<T>) right.getClass();
+    }
     return null;
   }
 
   public boolean isFiniteOnTheLeft() {
-    return false;
+    return left != null;
   }
 
   public boolean isFiniteOnTheRight() {
-    return false;
+    return right != null;
   }
 
   public boolean isEmpty() {
-    return false;
+    if (negate(isFiniteOnTheLeft() && isFiniteOnTheRight())) {
+      return false;
+    }
+    if (left.compareTo(right) == 0) {
+      return isOpenOnTheLeft() || isOpenOnTheRight();
+    }
+    return left.compareTo(right) > 0;
   }
 
   public boolean isOpenOnTheLeft() {
-    return false;
+    return leftOpen;
   }
 
   public boolean isOpenOnTheRight() {
-    return false;
+    return rightOpen;
   }
 
   public T getLeft() {
-    return null;
+    return left;
   }
 
   public T getRight() {
-    return null;
+    return right;
   }
 }
