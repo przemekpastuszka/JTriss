@@ -22,8 +22,15 @@ public class UnmodifiableSortedColumn<T extends Comparable<? super T>> implement
 
   @Override
   public SortedColumn<T> getSubColumn(ValueRange<T> range) {
-    int leftIndex = lowerBound(elements, new StandardColumnElement<T>(range.getLeft()));
-    int rightIndex = upperBound(elements, new StandardColumnElement<T>(range.getRight()));
+    int leftIndex = 0;
+    int rightIndex = elements.size() - 1;
+
+    if (range.isFiniteOnTheLeft()) {
+      leftIndex = lowerBound(elements, new StandardColumnElement<T>(range.getLeft()), range.isOpenOnTheLeft());
+    }
+    if (range.isFiniteOnTheRight()) {
+      rightIndex = upperBound(elements, new StandardColumnElement<T>(range.getRight()), range.isOpenOnTheRight());
+    }
 
     return new UnmodifiableSortedColumn<T>(elements.subList(leftIndex, rightIndex + 1), id);
   }

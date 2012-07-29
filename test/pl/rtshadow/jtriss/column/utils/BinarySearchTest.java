@@ -13,30 +13,39 @@ public class BinarySearchTest {
   List<Integer> input = asList(1, 5, 5, 7, 8, 12, 12, 19);
 
   @Test
-  public void findsAppropriateIndexes() {
-    assertThatRangeEquals(5, 12, /**/1, 6);
-    assertThatRangeEquals(6, 11, /**/3, 4);
-    assertThatRangeEquals(13, 27, /**/7, 7);
-    assertThatRangeEquals(-10, 5, /**/0, 2);
-    assertThatRangeEquals(7, 7, /**/3, 3);
+  public void findsAppropriateIndexesForNonOpenRanges() {
+    assertThatRangeEquals(5, 12, /**/1, 6, /**/false);
+    assertThatRangeEquals(6, 11, /**/3, 4, /**/false);
+    assertThatRangeEquals(13, 27, /**/7, 7, /**/false);
+    assertThatRangeEquals(-10, 5, /**/0, 2, /**/false);
+    assertThatRangeEquals(7, 7, /**/3, 3, /**/false);
+  }
+
+  @Test
+  public void findsAppropriateIndexesForOpenRanges() {
+    assertThatRangeEquals(5, 12, /**/3, 4, /**/true);
+    assertThatRangeEquals(6, 11, /**/3, 4, /**/true);
+    assertThatRangeEquals(13, 27, /**/7, 7, /**/true);
+    assertThatRangeEquals(-10, 5, /**/0, 0, /**/true);
   }
 
   @Test
   public void isAwareOfEmptyRanges() {
-    assertThatRangeIsEmpty(10, 10);
-    assertThatRangeIsEmpty(-14, -4);
-    assertThatRangeIsEmpty(24, 28);
+    assertThatRangeIsEmpty(10, 10, /**/false);
+    assertThatRangeIsEmpty(-14, -4, /**/false);
+    assertThatRangeIsEmpty(24, 28, /**/false);
+    assertThatRangeIsEmpty(7, 8, true);
   }
 
-  private void assertThatRangeIsEmpty(int leftValue, int rightValue) {
-    int leftIndex = lowerBound(input, leftValue);
-    int rightIndex = upperBound(input, leftValue);
+  private void assertThatRangeIsEmpty(int leftValue, int rightValue, boolean openRange) {
+    int leftIndex = lowerBound(input, leftValue, openRange);
+    int rightIndex = upperBound(input, leftValue, openRange);
 
     assertThat(leftIndex).isGreaterThan(rightIndex);
   }
 
-  private void assertThatRangeEquals(int leftValue, int rightValue, int leftIndex, int rightIndex) {
-    assertThat(lowerBound(input, leftValue)).isEqualTo(leftIndex);
-    assertThat(upperBound(input, rightValue)).isEqualTo(rightIndex);
+  private void assertThatRangeEquals(int leftValue, int rightValue, int leftIndex, int rightIndex, boolean openRange) {
+    assertThat(lowerBound(input, leftValue, openRange)).isEqualTo(leftIndex);
+    assertThat(upperBound(input, rightValue, openRange)).isEqualTo(rightIndex);
   }
 }
