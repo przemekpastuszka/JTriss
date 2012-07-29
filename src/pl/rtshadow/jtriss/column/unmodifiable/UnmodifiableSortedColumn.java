@@ -9,6 +9,7 @@ import java.util.List;
 import pl.rtshadow.jtriss.column.SortedColumn;
 import pl.rtshadow.jtriss.column.element.ColumnElement;
 import pl.rtshadow.jtriss.column.element.StandardColumnElement;
+import pl.rtshadow.jtriss.common.ValueRange;
 
 public class UnmodifiableSortedColumn<T extends Comparable<? super T>> implements SortedColumn<T> {
   private List<ColumnElement<T>> elements;
@@ -20,9 +21,9 @@ public class UnmodifiableSortedColumn<T extends Comparable<? super T>> implement
   }
 
   @Override
-  public SortedColumn<T> getSubColumn(T left, T right) {
-    int leftIndex = lowerBound(elements, new StandardColumnElement<T>(left));
-    int rightIndex = upperBound(elements, new StandardColumnElement<T>(right));
+  public SortedColumn<T> getSubColumn(ValueRange<T> range) {
+    int leftIndex = lowerBound(elements, new StandardColumnElement<T>(range.getLeft()));
+    int rightIndex = upperBound(elements, new StandardColumnElement<T>(range.getRight()));
 
     return new UnmodifiableSortedColumn<T>(elements.subList(leftIndex, rightIndex + 1), id);
   }

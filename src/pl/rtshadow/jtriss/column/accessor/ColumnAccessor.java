@@ -2,13 +2,14 @@ package pl.rtshadow.jtriss.column.accessor;
 
 import pl.rtshadow.jtriss.column.element.ColumnElement;
 import pl.rtshadow.jtriss.column.element.ModifiableColumnElement;
+import pl.rtshadow.jtriss.common.ValueRange;
 
 public interface ColumnAccessor<T extends Comparable<? super T>>
     extends Iterable<ColumnElement<T>> {
 
   ReconstructedObject<T> reconstruct(ColumnElement<T> firstElement);
 
-  ColumnAccessor<T> subColumn(T left, T right);
+  ColumnAccessor<T> subColumn(ValueRange<T> range);
 
   ModifiableColumnElement<T> insert(Object value, ColumnElement<T> nextElement);
 

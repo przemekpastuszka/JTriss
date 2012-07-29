@@ -10,6 +10,7 @@ import pl.rtshadow.jtriss.column.ColumnConstructor;
 import pl.rtshadow.jtriss.column.SortedColumn;
 import pl.rtshadow.jtriss.column.element.ColumnElement;
 import pl.rtshadow.jtriss.column.element.ModifiableColumnElement;
+import pl.rtshadow.jtriss.common.ValueRange;
 
 public class ListColumnAccessor<T extends Comparable<? super T>> extends AbstractColumnAccessor<T> {
   public ListColumnAccessor(Class<T> type, ColumnConstructor<T> constructor) {
@@ -90,7 +91,7 @@ public class ListColumnAccessor<T extends Comparable<? super T>> extends Abstrac
   }
 
   @Override
-  public ColumnAccessor<T> subColumn(T left, T right) {
-    return new ListColumnAccessor<T>(type, column.getSubColumn(left, right));
+  public ColumnAccessor<T> subColumn(ValueRange<T> range) {
+    return new ListColumnAccessor<T>(type, column.getSubColumn(range));
   }
 }
