@@ -24,21 +24,21 @@ public class ListColumnAccessor<T extends Comparable<? super T>> extends Abstrac
   }
 
   @Override
-  public ReconstructedObject<T> reconstruct(ColumnElement<T> firstElement) {
-    ReconstructedObject<T> reconstructedListOfValues = retrieveListOfValues(firstElement);
-    if (isEmpty(reconstructedListOfValues)) {
-      return null;
-    }
-    return reconstructedListOfValues;
-  }
+  public ReconstructedObject<T> reconstruct(ColumnElement<T> element) {
+    boolean hasAnyElementInsideColumn = false;
+    int originalColumnId = element.getColumnId();
 
-  private ReconstructedObject<T> retrieveListOfValues(ColumnElement<T> element) {
     ArrayList<T> valuesList = new ArrayList<T>();
-    while (column.contains(element)) {
+    while (element.getColumnId() == originalColumnId) {
+      hasAnyElementInsideColumn |= column.contains(element);
       valuesList.add(element.getValue());
       element = element.getNextElementInTheRow();
     }
-    return new ReconstructedObject<T>(valuesList, element);
+
+    if (hasAnyElementInsideColumn) {
+      return new ReconstructedObject<T>(valuesList, element);
+    }
+    return null;
   }
 
   @SuppressWarnings("unchecked")

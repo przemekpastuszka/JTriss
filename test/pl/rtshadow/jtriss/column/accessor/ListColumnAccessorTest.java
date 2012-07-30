@@ -8,6 +8,7 @@ import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static pl.rtshadow.jtriss.test.ColumnElementGenerator.element;
+import static pl.rtshadow.jtriss.test.TestObjects.TEST_COLUMN_ID;
 
 import java.util.List;
 
@@ -30,14 +31,10 @@ public class ListColumnAccessorTest extends AbstractColumnAccessorTest {
   @SuppressWarnings("unchecked")
   @Test
   public void returnsTwoElementsFromTheSameColumn() {
-    when(column.contains(any(ColumnElement.class))).thenReturn(true, true, false);
+    when(column.contains(any(ColumnElement.class))).thenReturn(false, true, false);
 
     accessor.prepareStructure();
-    ReconstructedObject<Integer> reconstructed =
-        accessor.reconstruct(
-            element(7).withNext(
-                element(8).withNext(
-                    element(9).get()).get()).get());
+    ReconstructedObject<Integer> reconstructed = accessor.reconstruct(testList());
 
     assertThat(reconstructed.getObject()).isInstanceOf(List.class);
     List<Integer> objects = (List<Integer>) reconstructed.getObject();
@@ -45,6 +42,22 @@ public class ListColumnAccessorTest extends AbstractColumnAccessorTest {
     assertThat(objects).hasSize(2).contains(7, 8);
 
     assertThat(reconstructed.getNextElementInRow().getValue()).isEqualTo(9);
+  }
+
+  private ModifiableColumnElement<Integer> testList() {
+    return element(7).withNext(
+        element(8).withNext(
+            element(9).inColumn(TEST_COLUMN_ID + 1).get()).get()).get();
+  }
+
+  @Test
+  public void returnsNullIfListNotIncludedInColumn() {
+    when(column.contains(any(ColumnElement.class))).thenReturn(false);
+
+    accessor.prepareStructure();
+    ReconstructedObject<Integer> reconstructed = accessor.reconstruct(testList());
+
+    assertThat(reconstructed).isNull();
   }
 
   @Test

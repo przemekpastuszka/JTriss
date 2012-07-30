@@ -43,4 +43,13 @@ public class ScalarColumnAccessorTest extends AbstractColumnAccessorTest {
 
     verify(constructor).add(element(7).get());
   }
+
+  @SuppressWarnings("unchecked")
+  @Test
+  public void returnsNullWhenElementNotInColumn() {
+    when(column.contains(any(ColumnElement.class))).thenReturn(false);
+
+    accessor.prepareStructure();
+    assertThat(accessor.reconstruct(element(7).get())).isNull();
+  }
 }
