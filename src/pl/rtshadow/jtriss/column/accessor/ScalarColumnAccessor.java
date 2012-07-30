@@ -8,11 +8,6 @@ import pl.rtshadow.jtriss.column.element.ModifiableColumnElement;
 import pl.rtshadow.jtriss.common.ValueRange;
 
 public class ScalarColumnAccessor<T extends Comparable<? super T>> extends AbstractColumnAccessor<T> {
-  public ScalarColumnAccessor(Class<T> type, ColumnConstructor<T> constructor) {
-    this.constructor = constructor;
-    this.type = type;
-  }
-
   private ScalarColumnAccessor(Class<T> type, SortedColumn<T> column) {
     this.column = column;
     this.type = type;
@@ -27,16 +22,32 @@ public class ScalarColumnAccessor<T extends Comparable<? super T>> extends Abstr
   }
 
   @Override
-  public ModifiableColumnElement<T> insert(Object value, ColumnElement<T> nextElement) {
-    ModifiableColumnElement<T> element = createElement(type, value);
-    element.setNextElement(nextElement);
-    constructor.add(element);
-
-    return element;
-  }
-
-  @Override
   public ColumnAccessor<T> subColumn(ValueRange<T> range) {
     return new ScalarColumnAccessor<T>(type, column.getSubColumn(range));
+  }
+
+  public static <T extends Comparable<? super T>> ColumnAccessorGenerator<T> generator(Class<T> type, ColumnConstructor<T> constructor) {
+    return new ScalarColumnAccessorGenerator<T>(type, constructor);
+  }
+
+  private static class ScalarColumnAccessorGenerator<T extends Comparable<? super T>> extends AbstractColumnAccessorGenerator<T> {
+    public ScalarColumnAccessorGenerator(Class<T> type, ColumnConstructor<T> constructor) {
+      this.constructor = constructor;
+      this.type = type;
+    }
+
+    @Override
+    public ModifiableColumnElement<T> insert(Object value, ColumnElement<T> nextElement) {
+      ModifiableColumnElement<T> element = createElement(type, value);
+      element.setNextElement(nextElement);
+      constructor.add(element);
+
+      return element;
+    }
+
+    @Override
+    public ColumnAccessor<T> prepareColumnAccessor() {
+      return new ScalarColumnAccessor<T>(type, constructor.generate());
+    }
   }
 }

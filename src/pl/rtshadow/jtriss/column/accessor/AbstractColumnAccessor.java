@@ -10,7 +10,6 @@ public abstract class AbstractColumnAccessor<T extends Comparable<? super T>>
     implements ColumnAccessor<T> {
 
   protected SortedColumn<T> column;
-  protected ColumnConstructor<T> constructor;
   protected Class<T> type;
 
   @Override
@@ -18,9 +17,10 @@ public abstract class AbstractColumnAccessor<T extends Comparable<? super T>>
     return column.iterator();
   }
 
-  @Override
-  public void prepareStructure() {
-    column = constructor.generate();
-    constructor = null;
+  protected static abstract class AbstractColumnAccessorGenerator<T extends Comparable<? super T>>
+      implements ColumnAccessorGenerator<T> {
+
+    protected ColumnConstructor<T> constructor;
+    protected Class<T> type;
   }
 }

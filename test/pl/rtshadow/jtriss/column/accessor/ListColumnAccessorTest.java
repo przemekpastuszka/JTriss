@@ -7,6 +7,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static pl.rtshadow.jtriss.column.accessor.ListColumnAccessor.generator;
 import static pl.rtshadow.jtriss.test.ColumnElementGenerator.element;
 import static pl.rtshadow.jtriss.test.TestObjects.TEST_COLUMN_ID;
 
@@ -25,7 +26,7 @@ import pl.rtshadow.jtriss.column.element.ModifiableColumnElement;
 public class ListColumnAccessorTest extends AbstractColumnAccessorTest {
   @Before
   public void setUp() {
-    accessor = new ListColumnAccessor<Integer>(Integer.class, constructor);
+    accessorGenerator = generator(Integer.class, constructor);
   }
 
   @SuppressWarnings("unchecked")
@@ -33,7 +34,7 @@ public class ListColumnAccessorTest extends AbstractColumnAccessorTest {
   public void returnsTwoElementsFromTheSameColumn() {
     when(column.contains(any(ColumnElement.class))).thenReturn(false, true, false);
 
-    accessor.prepareStructure();
+    ColumnAccessor<Integer> accessor = accessorGenerator.prepareColumnAccessor();
     ReconstructedObject<Integer> reconstructed = accessor.reconstruct(testList());
 
     assertThat(reconstructed.getObject()).isInstanceOf(List.class);
@@ -54,7 +55,7 @@ public class ListColumnAccessorTest extends AbstractColumnAccessorTest {
   public void returnsNullIfListNotIncludedInColumn() {
     when(column.contains(any(ColumnElement.class))).thenReturn(false);
 
-    accessor.prepareStructure();
+    ColumnAccessor<Integer> accessor = accessorGenerator.prepareColumnAccessor();
     ReconstructedObject<Integer> reconstructed = accessor.reconstruct(testList());
 
     assertThat(reconstructed).isNull();
@@ -62,7 +63,7 @@ public class ListColumnAccessorTest extends AbstractColumnAccessorTest {
 
   @Test
   public void addsEachObjectInGivenList() {
-    ModifiableColumnElement<Integer> newElement = accessor.insert(asList(7, 8), element(9).get());
+    ModifiableColumnElement<Integer> newElement = accessorGenerator.insert(asList(7, 8), element(9).get());
 
     assertThat(newElement).isEqualTo(element(8).get());
     assertThat(newElement.getNextElementInTheRow()).isEqualTo(element(9).get());

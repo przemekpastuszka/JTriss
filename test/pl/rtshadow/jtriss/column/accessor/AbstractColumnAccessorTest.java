@@ -12,7 +12,7 @@ import pl.rtshadow.jtriss.column.SortedColumn;
 
 @RunWith(MockitoJUnitRunner.class)
 public abstract class AbstractColumnAccessorTest {
-  ColumnAccessor<Integer> accessor;
+  ColumnAccessorGenerator<Integer> accessorGenerator;
 
   @Mock
   SortedColumn<Integer> column;
