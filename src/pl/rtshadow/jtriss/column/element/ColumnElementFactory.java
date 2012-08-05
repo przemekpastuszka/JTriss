@@ -9,7 +9,6 @@ public class ColumnElementFactory {
       throw new IllegalArgumentException("Expected instance of " + type + ", got: " + value.getClass());
     }
 
-    ModifiableColumnElement<T> element = new StandardColumnElement<T>(castedValue);
-    return element;
+    return new StandardColumnElement<T>(castedValue);
   }
 }

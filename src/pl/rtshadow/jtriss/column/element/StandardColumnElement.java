@@ -1,7 +1,7 @@
 package pl.rtshadow.jtriss.column.element;
 
 public class StandardColumnElement<T extends Comparable<? super T>> extends ModifiableColumnElement<T> {
-  private T value;
+  private final T value;
 
   public StandardColumnElement(T value) {
     this.value = value;

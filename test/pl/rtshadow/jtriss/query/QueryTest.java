@@ -19,13 +19,19 @@ import pl.rtshadow.jtriss.query.constraint.Constraint;
 @RunWith(MockitoJUnitRunner.class)
 public class QueryTest {
   @Mock
-  ValueRange<Integer> rangeA, rangeB;
+  private
+  ValueRange<Integer> rangeA;
+    @Mock
+    private ValueRange<Integer> rangeB;
   @Mock
+  private
   Constraint<Integer> constraint;
 
   @Mock
+  private
   Constraint<String> constraintWithStringType;
   @Mock
+  private
   ValueRange<String> rangeWithStringType;
 
   @Before

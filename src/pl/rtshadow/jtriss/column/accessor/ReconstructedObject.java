@@ -3,7 +3,7 @@ package pl.rtshadow.jtriss.column.accessor;
 import pl.rtshadow.jtriss.column.element.ColumnElement;
 
 public class ReconstructedObject<T extends Comparable<? super T>> {
-  private Object object;
+  private final Object object;
   private ColumnElement<T> nextElementInRow;
 
   ReconstructedObject(Object object, ColumnElement<T> nextElementInRow) {

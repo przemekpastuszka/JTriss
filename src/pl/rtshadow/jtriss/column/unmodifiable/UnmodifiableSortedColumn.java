@@ -12,8 +12,8 @@ import pl.rtshadow.jtriss.column.element.StandardColumnElement;
 import pl.rtshadow.jtriss.common.ValueRange;
 
 public class UnmodifiableSortedColumn<T extends Comparable<? super T>> implements SortedColumn<T> {
-  private List<ColumnElement<T>> elements;
-  private int id;
+  private final List<ColumnElement<T>> elements;
+  private final int id;
 
   UnmodifiableSortedColumn(List<ColumnElement<T>> elements, int id) {
     this.elements = elements;

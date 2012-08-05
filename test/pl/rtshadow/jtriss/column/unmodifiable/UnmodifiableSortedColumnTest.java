@@ -17,7 +17,7 @@ import pl.rtshadow.jtriss.common.ValueRange;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UnmodifiableSortedColumnTest {
-  SortedColumn<Integer> column = generateSortedColumnFrom(0, 1, 2, 3, 4);
+  private final SortedColumn<Integer> column = generateSortedColumnFrom(0, 1, 2, 3, 4);
 
   @Test(expected = UnsupportedOperationException.class)
   public void cannotModifyColumnViaIterator() {

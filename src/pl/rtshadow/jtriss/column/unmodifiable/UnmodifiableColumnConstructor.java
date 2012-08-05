@@ -12,9 +12,9 @@ import pl.rtshadow.jtriss.column.element.ColumnElement;
 import pl.rtshadow.jtriss.column.element.ModifiableColumnElement;
 
 public class UnmodifiableColumnConstructor<T extends Comparable<? super T>> implements ColumnConstructor<T> {
-  private List<ModifiableColumnElement<T>> elements = new ArrayList<ModifiableColumnElement<T>>();
+  private final List<ModifiableColumnElement<T>> elements = new ArrayList<ModifiableColumnElement<T>>();
   private boolean hasBeenGenerated = false;
-  private int id;
+  private final int id;
 
   private UnmodifiableColumnConstructor(int id) {
     this.id = id;

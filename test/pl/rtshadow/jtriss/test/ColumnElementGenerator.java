@@ -6,7 +6,7 @@ import pl.rtshadow.jtriss.column.element.ModifiableColumnElement;
 import pl.rtshadow.jtriss.column.element.StandardColumnElement;
 
 public class ColumnElementGenerator<T extends Comparable<? super T>> {
-  private ModifiableColumnElement<T> element;
+  private final ModifiableColumnElement<T> element;
 
   private ColumnElementGenerator(ModifiableColumnElement<T> element) {
     this.element = element;

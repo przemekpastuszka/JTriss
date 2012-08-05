@@ -3,7 +3,7 @@ package pl.rtshadow.jtriss.utils;
 import java.util.Comparator;
 
 class EqualAlteredComparator<T extends Comparable<? super T>> implements Comparator<T> {
-  private int valueForEqual;
+  private final int valueForEqual;
 
   private EqualAlteredComparator(int valueForEqual) {
     this.valueForEqual = valueForEqual;

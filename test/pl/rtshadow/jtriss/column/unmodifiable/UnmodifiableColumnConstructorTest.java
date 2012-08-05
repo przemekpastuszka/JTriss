@@ -27,7 +27,7 @@ public class UnmodifiableColumnConstructorTest {
 
   @Test(expected = IllegalStateException.class)
   public void cannotGenerateColumnMultipleTimes() {
-    ColumnConstructor<Integer> constructor = constructor(TEST_COLUMN_ID);
+    ColumnConstructor<Integer> constructor = UnmodifiableColumnConstructor.<Integer>constructor(TEST_COLUMN_ID);
     constructor.add(new StandardColumnElement<Integer>(5));
 
     constructor.generate();

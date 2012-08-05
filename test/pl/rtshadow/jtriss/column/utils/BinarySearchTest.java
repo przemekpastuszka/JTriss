@@ -10,7 +10,7 @@ import java.util.List;
 import org.junit.Test;
 
 public class BinarySearchTest {
-  List<Integer> input = asList(1, 5, 5, 7, 8, 12, 12, 19);
+  private final List<Integer> input = asList(1, 5, 5, 7, 8, 12, 12, 19);
 
   @Test
   public void findsAppropriateIndexesForNonOpenRanges() {
@@ -39,7 +39,7 @@ public class BinarySearchTest {
 
   private void assertThatRangeIsEmpty(int leftValue, int rightValue, boolean openRange) {
     int leftIndex = lowerBound(input, leftValue, openRange);
-    int rightIndex = upperBound(input, leftValue, openRange);
+    int rightIndex = upperBound(input, rightValue, openRange);
 
     assertThat(leftIndex).isGreaterThan(rightIndex);
   }

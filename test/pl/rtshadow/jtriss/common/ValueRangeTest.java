@@ -11,7 +11,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ValueRangeTest {
-  private static int INFINITY = 1000;
+  private static final int INFINITY = 1000;
 
   @Test
   public void createsValidRangesInitially() {
