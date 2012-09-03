@@ -1,6 +1,6 @@
 package pl.rtshadow.jtriss.column.accessor;
 
-import static pl.rtshadow.jtriss.column.element.ColumnElementFactory.createElement;
+import static pl.rtshadow.jtriss.factory.StandardFactory.createElement;
 import pl.rtshadow.jtriss.column.ColumnConstructor;
 import pl.rtshadow.jtriss.column.SortedColumn;
 import pl.rtshadow.jtriss.column.element.ColumnElement;

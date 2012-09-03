@@ -5,7 +5,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static pl.rtshadow.jtriss.query.Query.selectFrom;
+import static pl.rtshadow.jtriss.query.Query.query;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -46,7 +46,7 @@ public class QueryTest {
 
   @Test
   public void doesNotIntersectRangesWhenConstraintsAreOnDifferentColumns() {
-    Query q = selectFrom()
+    Query q = query()
         .and(1, constraint, Integer.class)
         .and(2, constraint, Integer.class);
 
@@ -57,7 +57,7 @@ public class QueryTest {
 
   @Test
   public void intersectRangesWhenConstraintsAreOnTheSameColumn() {
-    Query q = selectFrom()
+    Query q = query()
         .and(1, constraint, Integer.class)
         .and(1, constraint, Integer.class);
 
@@ -68,7 +68,7 @@ public class QueryTest {
 
   @Test(expected = IllegalArgumentException.class)
   public void throwsExceptionWhenDifferentConstraintTypesGivenOnOneColumn() {
-    selectFrom()
+    query()
         .and(1, constraint, Integer.class)
         .and(1, constraintWithStringType, String.class);
   }

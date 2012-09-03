@@ -1,7 +1,7 @@
 package pl.rtshadow.jtriss.column.accessor;
 
 import static org.apache.commons.lang3.BooleanUtils.negate;
-import static pl.rtshadow.jtriss.column.element.ColumnElementFactory.createElement;
+import static pl.rtshadow.jtriss.factory.StandardFactory.createElement;
 
 import java.util.ArrayList;
 import java.util.List;

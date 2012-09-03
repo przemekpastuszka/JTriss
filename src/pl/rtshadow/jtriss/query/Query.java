@@ -25,7 +25,7 @@ public class Query {
     return this;
   }
 
-  public static Query selectFrom() {
+  public static Query query() {
     return new Query();
   }
 
