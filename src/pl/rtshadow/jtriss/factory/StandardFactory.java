@@ -8,7 +8,7 @@ import pl.rtshadow.jtriss.column.element.ModifiableColumnElement;
 import pl.rtshadow.jtriss.column.element.StandardColumnElement;
 import pl.rtshadow.jtriss.column.unmodifiable.UnmodifiableColumnConstructor;
 
-public class StandardFactory {
+public class StandardFactory implements TrissFactory {
   public static <T extends Comparable<? super T>> ModifiableColumnElement<T>
       createElement(Class<T> type, Object value) {
 
@@ -20,16 +20,19 @@ public class StandardFactory {
     return new StandardColumnElement<T>(castedValue);
   }
 
+  @Override
   public <T extends Comparable<? super T>> ColumnAccessorGenerator<T> createScalarColumnAccessorGenerator(
       Class<T> type, ColumnConstructor<T> constructor) {
     return ScalarColumnAccessor.generator(type, constructor);
   }
 
+  @Override
   public <T extends Comparable<? super T>> ColumnAccessorGenerator<T> createListColumnAccessorGenerator(
       Class<T> type, ColumnConstructor<T> constructor) {
     return ListColumnAccessor.generator(type, constructor);
   }
 
+  @Override
   public <T extends Comparable<? super T>> ColumnConstructor<T> createColumnConstructor(int id) {
     return UnmodifiableColumnConstructor.constructor(id);
   }
