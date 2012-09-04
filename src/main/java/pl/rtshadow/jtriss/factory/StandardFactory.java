@@ -34,6 +34,6 @@ public class StandardFactory implements TrissFactory {
 
   @Override
   public <T extends Comparable<? super T>> ColumnConstructor<T> createColumnConstructor(int id) {
-    return UnmodifiableColumnConstructor.constructor(id);
+    return UnmodifiableColumnConstructor.<T> constructor(id);
   }
 }
