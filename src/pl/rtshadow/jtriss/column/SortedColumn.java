@@ -9,4 +9,6 @@ public interface SortedColumn<T extends Comparable<? super T>>
   SortedColumn<T> getSubColumn(ValueRange<T> valueRange);
 
   boolean contains(ColumnElement<T> element);
+
+  int getSize();
 }

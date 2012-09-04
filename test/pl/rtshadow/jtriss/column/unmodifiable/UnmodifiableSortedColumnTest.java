@@ -51,6 +51,8 @@ public class UnmodifiableSortedColumnTest {
   private void assertColumnContainsOnly(SortedColumn<Integer> column, Integer... elements) {
     assertTheSameCollection(column.iterator(), generateSortedColumnFrom(elements).iterator());
 
+    assertThat(column.getSize()).isEqualTo(elements.length);
+
     for (Integer i : elements) {
       columnContains(column, i, true);
     }

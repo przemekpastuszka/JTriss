@@ -9,4 +9,6 @@ public interface ColumnAccessor<T extends Comparable<? super T>>
   ReconstructedObject<T> reconstruct(ColumnElement<T> firstElement);
 
   ColumnAccessor<T> subColumn(ValueRange<T> range);
+
+  int getSize();
 }

@@ -54,4 +54,9 @@ public class UnmodifiableSortedColumn<T extends Comparable<? super T>> implement
   private int positionOf(int index) {
     return elements.get(index).getPositionInColumn();
   }
+
+  @Override
+  public int getSize() {
+    return elements.size();
+  }
 }
