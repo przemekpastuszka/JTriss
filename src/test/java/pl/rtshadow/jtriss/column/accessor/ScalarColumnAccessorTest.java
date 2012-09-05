@@ -14,12 +14,14 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import pl.rtshadow.jtriss.column.element.ColumnElement;
 import pl.rtshadow.jtriss.column.element.ModifiableColumnElement;
+import pl.rtshadow.jtriss.test.TestFactory;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ScalarColumnAccessorTest extends AbstractColumnAccessorTest {
   @Before
   public void setUp() {
     accessorGenerator = generator(Integer.class, constructor);
+    accessorGenerator.setFactory(new TestFactory());
   }
 
   @SuppressWarnings("unchecked")
@@ -39,10 +41,8 @@ public class ScalarColumnAccessorTest extends AbstractColumnAccessorTest {
   public void treatsAnyObjectAsScalar() {
     ModifiableColumnElement<Integer> newElement = accessorGenerator.insert(7, element(8));
 
-    assertThat(newElement).isEqualTo(element(7));
-    assertThat(newElement.getNextElementInTheRow()).isEqualTo(element(8));
-
-    verify(constructor).add(element(7));
+    assertThat(newElement).isEqualTo(element(7).withNext(element(8)));
+    verify(constructor).add(element(7).withNext(element(8)));
   }
 
   @SuppressWarnings("unchecked")

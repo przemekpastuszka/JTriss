@@ -1,5 +1,7 @@
 package pl.rtshadow.jtriss.column.element;
 
+import static org.apache.commons.lang3.builder.ToStringBuilder.reflectionToString;
+
 public abstract class ModifiableColumnElement<T extends Comparable<? super T>> implements ColumnElement<T> {
   private ColumnElement<T> nextElement;
   private int position;
@@ -38,21 +40,7 @@ public abstract class ModifiableColumnElement<T extends Comparable<? super T>> i
   }
 
   @Override
-  public boolean equals(Object obj) {
-    if (obj instanceof ModifiableColumnElement) {
-      ModifiableColumnElement<?> element = (ModifiableColumnElement<?>) obj;
-      return getValue().equals(element.getValue());
-    }
-    return super.equals(obj);
-  }
-
-  @Override
-  public int hashCode() {
-    return getValue().hashCode();
-  }
-
-  @Override
   public String toString() {
-    return getValue().toString();
+    return reflectionToString(this);
   }
 }

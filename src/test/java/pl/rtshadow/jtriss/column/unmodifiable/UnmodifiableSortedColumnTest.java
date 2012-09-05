@@ -8,6 +8,7 @@ import static pl.rtshadow.jtriss.test.CommonAssertions.assertTheSameCollection;
 import static pl.rtshadow.jtriss.test.TestColumnElement.element;
 import static pl.rtshadow.jtriss.test.TestObjects.TEST_COLUMN_ID;
 import static pl.rtshadow.jtriss.test.TestObjects.generateSortedColumnFrom;
+import static pl.rtshadow.jtriss.test.TestObjects.toElementList;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -50,21 +51,21 @@ public class UnmodifiableSortedColumnTest {
     assertSubColumnContainsOnly(rightFiniteRange(2).openOnTheRight(), 0, 1);
   }
 
-  private void assertSubColumnContainsOnly(ValueRange<Integer> valueRange, Integer... elements) {
-    assertColumnContainsOnly(column.getSubColumn(valueRange), elements);
+  private void assertSubColumnContainsOnly(ValueRange<Integer> valueRange, Integer... values) {
+    assertColumnContainsOnly(column.getSubColumn(valueRange), values);
   }
 
-  private void assertColumnContainsOnly(SortedColumn<Integer> column, Integer... elements) {
-    assertTheSameCollection(column.iterator(), generateSortedColumnFrom(elements).iterator());
+  private void assertColumnContainsOnly(SortedColumn<Integer> column, Integer... values) {
+    assertTheSameCollection(column.iterator(), toElementList(values).iterator());
 
-    assertThat(column.getSize()).isEqualTo(elements.length);
+    assertThat(column.getSize()).isEqualTo(values.length);
 
-    for (Integer i : elements) {
+    for (Integer i : values) {
       columnContains(column, i, true);
     }
-    if (elements.length > 0) {
-      columnContains(column, elements[0] - 1, false);
-      columnContains(column, elements[elements.length - 1] + 1, false);
+    if (values.length > 0) {
+      columnContains(column, values[0] - 1, false);
+      columnContains(column, values[values.length - 1] + 1, false);
     }
     else {
       columnContains(column, 1, false);

@@ -10,6 +10,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.ObjectUtils;
+
 import pl.rtshadow.jtriss.column.accessor.ColumnAccessor;
 import pl.rtshadow.jtriss.column.accessor.ReconstructedObject;
 import pl.rtshadow.jtriss.column.element.ColumnElement;
@@ -60,7 +62,7 @@ public class StandardTable implements Table {
     return Collections.min(queryAccessors, new Comparator<ColumnAccessor<?>>() {
       @Override
       public int compare(ColumnAccessor<?> o1, ColumnAccessor<?> o2) {
-        return Integer.valueOf(o1.getSize()).compareTo(o2.getSize());
+        return ObjectUtils.compare(o1.getSize(), o2.getSize());
       }
     });
   }

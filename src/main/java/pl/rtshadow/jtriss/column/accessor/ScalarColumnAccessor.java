@@ -1,6 +1,5 @@
 package pl.rtshadow.jtriss.column.accessor;
 
-import static pl.rtshadow.jtriss.factory.StandardFactory.createElement;
 import pl.rtshadow.jtriss.column.ColumnConstructor;
 import pl.rtshadow.jtriss.column.SortedColumn;
 import pl.rtshadow.jtriss.column.element.ColumnElement;
@@ -38,7 +37,7 @@ public class ScalarColumnAccessor<T extends Comparable<? super T>> extends Abstr
 
     @Override
     public ModifiableColumnElement<T> insert(Object value, ColumnElement<T> nextElement) {
-      ModifiableColumnElement<T> element = createElement(type, value);
+      ModifiableColumnElement<T> element = factory.createElement(type, value);
       element.setNextElement(nextElement);
       constructor.add(element);
 

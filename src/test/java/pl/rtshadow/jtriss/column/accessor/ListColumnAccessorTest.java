@@ -2,9 +2,7 @@ package pl.rtshadow.jtriss.column.accessor;
 
 import static java.util.Arrays.asList;
 import static org.fest.assertions.Assertions.assertThat;
-import static org.mockito.ArgumentCaptor.forClass;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static pl.rtshadow.jtriss.column.accessor.ListColumnAccessor.generator;
@@ -16,17 +14,18 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import pl.rtshadow.jtriss.column.element.ColumnElement;
 import pl.rtshadow.jtriss.column.element.ModifiableColumnElement;
+import pl.rtshadow.jtriss.test.TestFactory;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ListColumnAccessorTest extends AbstractColumnAccessorTest {
   @Before
   public void setUp() {
     accessorGenerator = generator(Integer.class, constructor);
+    accessorGenerator.setFactory(new TestFactory());
   }
 
   @SuppressWarnings("unchecked")
@@ -65,24 +64,8 @@ public class ListColumnAccessorTest extends AbstractColumnAccessorTest {
   public void addsEachObjectInGivenList() {
     ModifiableColumnElement<Integer> newElement = accessorGenerator.insert(asList(7, 8), element(9));
 
-    assertThat(newElement).isEqualTo(element(8));
-    assertThat(newElement.getNextElementInTheRow()).isEqualTo(element(9));
-
-    verify(constructor).add(element(7));
-    verify(constructor).add(element(8));
-
-    assertThat(getElementAddedToConstructorWithValue(7).getNextElementInTheRow().getValue()).isEqualTo(8);
-  }
-
-  @SuppressWarnings({ "rawtypes", "unchecked" })
-  private ModifiableColumnElement<Integer> getElementAddedToConstructorWithValue(int value) {
-    ArgumentCaptor<ModifiableColumnElement> captor = forClass(ModifiableColumnElement.class);
-    verify(constructor, atLeastOnce()).add(captor.capture());
-    for (ModifiableColumnElement element : captor.getAllValues()) {
-      if (element.getValue().equals(value)) {
-        return element;
-      }
-    }
-    return null;
+    assertThat(newElement).isEqualTo(element(8).withNext(element(9)));
+    verify(constructor).add(element(7).withNext(element(8).withNext(element(9))));
+    verify(constructor).add(element(8).withNext(element(9)));
   }
 }

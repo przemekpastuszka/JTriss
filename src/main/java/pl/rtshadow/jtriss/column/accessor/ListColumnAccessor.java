@@ -1,7 +1,6 @@
 package pl.rtshadow.jtriss.column.accessor;
 
 import static org.apache.commons.lang3.BooleanUtils.negate;
-import static pl.rtshadow.jtriss.factory.StandardFactory.createElement;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +45,6 @@ public class ListColumnAccessor<T extends Comparable<? super T>> extends Abstrac
   }
 
   private static class ListColumnAccessorGenerator<T extends Comparable<? super T>> extends AbstractColumnAccessorGenerator<T> {
-
     public ListColumnAccessorGenerator(Class<T> type, ColumnConstructor<T> constructor) {
       this.constructor = constructor;
       this.type = type;
@@ -75,7 +73,7 @@ public class ListColumnAccessor<T extends Comparable<? super T>> extends Abstrac
     private List<ModifiableColumnElement<T>> mapValuesToColumnElements(List<T> valuesList) {
       List<ModifiableColumnElement<T>> columnElements = new ArrayList<ModifiableColumnElement<T>>(valuesList.size());
       for (T singleValue : valuesList) {
-        columnElements.add(createElement(type, singleValue));
+        columnElements.add(factory.createElement(type, singleValue));
       }
       return columnElements;
     }

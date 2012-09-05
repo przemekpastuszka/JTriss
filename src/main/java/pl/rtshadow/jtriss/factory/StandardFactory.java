@@ -9,7 +9,8 @@ import pl.rtshadow.jtriss.column.element.StandardColumnElement;
 import pl.rtshadow.jtriss.column.unmodifiable.UnmodifiableColumnConstructor;
 
 public class StandardFactory implements TrissFactory {
-  public static <T extends Comparable<? super T>> ModifiableColumnElement<T>
+  @Override
+  public <T extends Comparable<? super T>> ModifiableColumnElement<T>
       createElement(Class<T> type, Object value) {
 
     T castedValue = type.cast(value);

@@ -5,6 +5,8 @@ import java.util.Iterator;
 import pl.rtshadow.jtriss.column.ColumnConstructor;
 import pl.rtshadow.jtriss.column.SortedColumn;
 import pl.rtshadow.jtriss.column.element.ColumnElement;
+import pl.rtshadow.jtriss.factory.StandardFactory;
+import pl.rtshadow.jtriss.factory.TrissFactory;
 
 abstract class AbstractColumnAccessor<T extends Comparable<? super T>>
     implements ColumnAccessor<T> {
@@ -30,7 +32,14 @@ abstract class AbstractColumnAccessor<T extends Comparable<? super T>>
   static abstract class AbstractColumnAccessorGenerator<T extends Comparable<? super T>>
       implements ColumnAccessorGenerator<T> {
 
+    protected TrissFactory factory = new StandardFactory();
+
     ColumnConstructor<T> constructor;
     Class<T> type;
+
+    @Override
+    public void setFactory(TrissFactory factory) {
+      this.factory = factory;
+    }
   }
 }
