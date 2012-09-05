@@ -1,7 +1,6 @@
 package pl.rtshadow.jtriss.table;
 
 import static java.util.Arrays.asList;
-import static java.util.Collections.emptyList;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 import static pl.rtshadow.jtriss.test.TestColumnElement.element;
@@ -16,6 +15,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import pl.rtshadow.jtriss.column.accessor.ColumnAccessor;
 import pl.rtshadow.jtriss.column.accessor.ReconstructedObject;
+import pl.rtshadow.jtriss.column.element.ColumnElement;
 import pl.rtshadow.jtriss.common.ValueRange;
 import pl.rtshadow.jtriss.query.Query;
 import pl.rtshadow.jtriss.row.Row;
@@ -40,24 +40,29 @@ public class StandardTableTest {
 
   @Test
   public void returnsEmptyCollectionWhenNoElements() {
-    when(subcolumnOfA.getSize()).thenReturn(0);
-    when(subcolumnOfA.iterator()).thenReturn(emptyList().iterator());
+    putInColumn(subcolumnOfA);
 
     assertThat(table.select(query)).isEmpty();
   }
 
   @Test
   public void returnsEmptyCollectionWhenOneColumn() {
-    when(subcolumnOfA.getSize()).thenReturn(2);
-    when(subcolumnOfA.iterator()).thenReturn(asList(element(7), element(8)).iterator());
-    when(subcolumnOfA.reconstruct(element(7))).thenReturn(reconstructed(7));
-    when(subcolumnOfA.reconstruct(element(8))).thenReturn(reconstructed(8));
+    putInColumn(subcolumnOfA, element(7), element(8));
 
     assertThat(table.select(query)).containsOnly(row(7), row(8));
   }
 
-  private ReconstructedObject<Integer> reconstructed(Integer value) {
-    return new ReconstructedObject<Integer>(value, null);
+  private void putInColumn(ColumnAccessor<Integer> column, ColumnElement<Integer>... elements) {
+    when(column.getSize()).thenReturn(elements.length);
+    when(column.iterator()).thenReturn(asList(elements).iterator());
+
+    for (ColumnElement<Integer> element : elements) {
+      when(column.reconstruct(element)).thenReturn(reconstructed(element));
+    }
+  }
+
+  private ReconstructedObject<Integer> reconstructed(ColumnElement<Integer> element) {
+    return new ReconstructedObject<Integer>(element.getValue(), element.getNextElementInTheRow());
   }
 
   private Row row(Integer... values) {
