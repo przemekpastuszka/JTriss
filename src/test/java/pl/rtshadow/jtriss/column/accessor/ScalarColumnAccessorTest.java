@@ -5,7 +5,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static pl.rtshadow.jtriss.column.accessor.ScalarColumnAccessor.generator;
-import static pl.rtshadow.jtriss.test.ColumnElementGenerator.element;
+import static pl.rtshadow.jtriss.test.TestColumnElement.element;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -29,7 +29,7 @@ public class ScalarColumnAccessorTest extends AbstractColumnAccessorTest {
 
     ColumnAccessor<Integer> accessor = accessorGenerator.prepareColumnAccessor();
     ReconstructedObject<Integer> reconstructed =
-        accessor.reconstruct(element(7).withNext(element(8).get()).get());
+        accessor.reconstruct(element(7).withNext(element(8)));
 
     assertThat(reconstructed.getObject()).isEqualTo(7);
     assertThat(reconstructed.getNextElementInRow().getValue()).isEqualTo(8);
@@ -37,12 +37,12 @@ public class ScalarColumnAccessorTest extends AbstractColumnAccessorTest {
 
   @Test
   public void treatsAnyObjectAsScalar() {
-    ModifiableColumnElement<Integer> newElement = accessorGenerator.insert(7, element(8).get());
+    ModifiableColumnElement<Integer> newElement = accessorGenerator.insert(7, element(8));
 
-    assertThat(newElement).isEqualTo(element(7).get());
-    assertThat(newElement.getNextElementInTheRow()).isEqualTo(element(8).get());
+    assertThat(newElement).isEqualTo(element(7));
+    assertThat(newElement.getNextElementInTheRow()).isEqualTo(element(8));
 
-    verify(constructor).add(element(7).get());
+    verify(constructor).add(element(7));
   }
 
   @SuppressWarnings("unchecked")
@@ -51,6 +51,6 @@ public class ScalarColumnAccessorTest extends AbstractColumnAccessorTest {
     when(column.contains(any(ColumnElement.class))).thenReturn(false);
 
     ColumnAccessor<Integer> accessor = accessorGenerator.prepareColumnAccessor();
-    assertThat(accessor.reconstruct(element(7).get())).isNull();
+    assertThat(accessor.reconstruct(element(7))).isNull();
   }
 }

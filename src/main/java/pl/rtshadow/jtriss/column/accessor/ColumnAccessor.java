@@ -11,4 +11,6 @@ public interface ColumnAccessor<T extends Comparable<? super T>>
   ColumnAccessor<T> subColumn(ValueRange<T> range);
 
   int getSize();
+
+  int getId();
 }

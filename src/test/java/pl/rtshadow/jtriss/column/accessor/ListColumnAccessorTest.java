@@ -8,7 +8,7 @@ import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static pl.rtshadow.jtriss.column.accessor.ListColumnAccessor.generator;
-import static pl.rtshadow.jtriss.test.ColumnElementGenerator.element;
+import static pl.rtshadow.jtriss.test.TestColumnElement.element;
 import static pl.rtshadow.jtriss.test.TestObjects.TEST_COLUMN_ID;
 
 import java.util.List;
@@ -48,7 +48,7 @@ public class ListColumnAccessorTest extends AbstractColumnAccessorTest {
   private ModifiableColumnElement<Integer> testList() {
     return element(7).withNext(
         element(8).withNext(
-            element(9).inColumn(TEST_COLUMN_ID + 1).get()).get()).get();
+            element(9).inColumn(TEST_COLUMN_ID + 1)));
   }
 
   @Test
@@ -63,13 +63,13 @@ public class ListColumnAccessorTest extends AbstractColumnAccessorTest {
 
   @Test
   public void addsEachObjectInGivenList() {
-    ModifiableColumnElement<Integer> newElement = accessorGenerator.insert(asList(7, 8), element(9).get());
+    ModifiableColumnElement<Integer> newElement = accessorGenerator.insert(asList(7, 8), element(9));
 
-    assertThat(newElement).isEqualTo(element(8).get());
-    assertThat(newElement.getNextElementInTheRow()).isEqualTo(element(9).get());
+    assertThat(newElement).isEqualTo(element(8));
+    assertThat(newElement.getNextElementInTheRow()).isEqualTo(element(9));
 
-    verify(constructor).add(element(7).get());
-    verify(constructor).add(element(8).get());
+    verify(constructor).add(element(7));
+    verify(constructor).add(element(8));
 
     assertThat(getElementAddedToConstructorWithValue(7).getNextElementInTheRow().getValue()).isEqualTo(8);
   }

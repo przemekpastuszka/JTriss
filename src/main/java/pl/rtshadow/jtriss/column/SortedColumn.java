@@ -11,4 +11,6 @@ public interface SortedColumn<T extends Comparable<? super T>>
   boolean contains(ColumnElement<T> element);
 
   int getSize();
+
+  int getId();
 }

@@ -22,6 +22,11 @@ abstract class AbstractColumnAccessor<T extends Comparable<? super T>>
     return column.getSize();
   }
 
+  @Override
+  public int getId() {
+    return column.getId();
+  }
+
   static abstract class AbstractColumnAccessorGenerator<T extends Comparable<? super T>>
       implements ColumnAccessorGenerator<T> {
 

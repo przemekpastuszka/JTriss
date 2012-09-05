@@ -59,4 +59,9 @@ public class UnmodifiableSortedColumn<T extends Comparable<? super T>> implement
   public int getSize() {
     return elements.size();
   }
+
+  @Override
+  public int getId() {
+    return id;
+  }
 }

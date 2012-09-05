@@ -6,7 +6,7 @@ public class ReconstructedObject<T extends Comparable<? super T>> {
   private final Object object;
   private ColumnElement<T> nextElementInRow;
 
-  ReconstructedObject(Object object, ColumnElement<T> nextElementInRow) {
+  public ReconstructedObject(Object object, ColumnElement<T> nextElementInRow) {
     this.object = object;
     this.nextElementInRow = nextElementInRow;
   }

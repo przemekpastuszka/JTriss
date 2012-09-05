@@ -1,5 +1,13 @@
 package pl.rtshadow.jtriss.row;
 
-public class Row {
+import java.util.ArrayList;
+import java.util.Collection;
 
+public class Row extends ArrayList {
+  public Row() {
+  }
+
+  public Row(Collection c) {
+    super(c);
+  }
 }

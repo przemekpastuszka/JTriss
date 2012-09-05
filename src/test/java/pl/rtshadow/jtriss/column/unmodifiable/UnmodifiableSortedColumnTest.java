@@ -4,8 +4,9 @@ import static org.fest.assertions.Assertions.assertThat;
 import static pl.rtshadow.jtriss.common.ValueRange.finiteRange;
 import static pl.rtshadow.jtriss.common.ValueRange.leftFiniteRange;
 import static pl.rtshadow.jtriss.common.ValueRange.rightFiniteRange;
-import static pl.rtshadow.jtriss.test.ColumnElementGenerator.element;
 import static pl.rtshadow.jtriss.test.CommonAssertions.assertTheSameCollection;
+import static pl.rtshadow.jtriss.test.TestColumnElement.element;
+import static pl.rtshadow.jtriss.test.TestObjects.TEST_COLUMN_ID;
 import static pl.rtshadow.jtriss.test.TestObjects.generateSortedColumnFrom;
 
 import org.junit.Test;
@@ -18,6 +19,11 @@ import pl.rtshadow.jtriss.common.ValueRange;
 @RunWith(MockitoJUnitRunner.class)
 public class UnmodifiableSortedColumnTest {
   private final SortedColumn<Integer> column = generateSortedColumnFrom(0, 1, 2, 3, 4);
+
+  @Test
+  public void hasValidId() {
+    assertThat(column.getId()).isEqualTo(TEST_COLUMN_ID);
+  }
 
   @Test(expected = UnsupportedOperationException.class)
   public void cannotModifyColumnViaIterator() {
@@ -66,6 +72,6 @@ public class UnmodifiableSortedColumnTest {
   }
 
   private void columnContains(SortedColumn<Integer> column, Integer i, boolean expected) {
-    assertThat(column.contains(element(i).atPosition(i).get())).isEqualTo(expected);
+    assertThat(column.contains(element(i).atPosition(i))).isEqualTo(expected);
   }
 }
