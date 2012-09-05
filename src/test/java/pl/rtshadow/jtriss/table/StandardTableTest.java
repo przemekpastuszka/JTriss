@@ -2,9 +2,14 @@ package pl.rtshadow.jtriss.table;
 
 import static java.util.Arrays.asList;
 import static org.fest.assertions.Assertions.assertThat;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static pl.rtshadow.jtriss.test.TestColumnElement.element;
 import static pl.rtshadow.jtriss.utils.Tools.map;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.junit.Before;
@@ -23,33 +28,52 @@ import pl.rtshadow.jtriss.row.Row;
 @RunWith(MockitoJUnitRunner.class)
 public class StandardTableTest {
   @Mock
-  private ColumnAccessor columnA, subcolumnOfA;
-  @Mock
   private ValueRange columnARange;
   @Mock
   private Query query;
 
   private Table table;
+  private List<ColumnAccessor> subColumns, columns;
 
   @Before
   public void setUp() {
-    table = new StandardTable(asList(columnA));
-    when(columnA.subColumn(columnARange)).thenReturn(subcolumnOfA);
     when(query.getColumnRange()).thenReturn(map(Pair.of(0, columnARange)));
   }
 
   @Test
   public void returnsEmptyCollectionWhenNoElements() {
-    putInColumn(subcolumnOfA);
+    createColumns(1);
 
     assertThat(table.select(query)).isEmpty();
   }
 
   @Test
-  public void returnsEmptyCollectionWhenOneColumn() {
-    putInColumn(subcolumnOfA, element(7), element(8));
+  public void returnsAppropriateRowsInSimpleCase() {
+    createColumns(1);
+    putInColumn(subColumns.get(0), element(7), element(8));
 
     assertThat(table.select(query)).containsOnly(row(7), row(8));
+  }
+
+  private void createColumns(int number) {
+    subColumns = new ArrayList<ColumnAccessor>(number);
+    columns = new ArrayList<ColumnAccessor>(number);
+
+    for (int i = 0; i < number; ++i) {
+      ColumnAccessor column = createColumn(i, columns);
+      ColumnAccessor subColumn = createColumn(i, subColumns);
+      when(column.subColumn(any(ValueRange.class))).thenReturn(subColumn);
+    }
+
+    table = new StandardTable(columns);
+  }
+
+  private ColumnAccessor createColumn(int i, List<ColumnAccessor> target) {
+    ColumnAccessor column = mock(ColumnAccessor.class);
+    when(column.getId()).thenReturn(i);
+    putInColumn(column);
+    target.add(column);
+    return column;
   }
 
   private void putInColumn(ColumnAccessor<Integer> column, ColumnElement<Integer>... elements) {
