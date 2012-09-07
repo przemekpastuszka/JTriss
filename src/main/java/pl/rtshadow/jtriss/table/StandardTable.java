@@ -8,7 +8,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.lang3.ObjectUtils;
 
@@ -21,9 +20,11 @@ import pl.rtshadow.jtriss.row.Row;
 
 public class StandardTable implements Table {
   private final List<ColumnAccessor> accessors;
+  private final int size;
 
   public StandardTable(List<ColumnAccessor> accessors) {
     this.accessors = accessors;
+    this.size = accessors.size();
   }
 
   @Override
@@ -43,9 +44,9 @@ public class StandardTable implements Table {
   }
 
   private Row retrieveNextRowFrom(ColumnElement<?> element, ColumnAccessor<?> minimalColumn, List<ColumnAccessor<?>> queryAccessors) {
-    Row nextRow = new Row(nCopies(accessors.size(), null));
-    for (int i = 0; i < accessors.size(); ++i) {
-      ColumnAccessor currentColumn = queryAccessors.get((minimalColumn.getId() + i) % accessors.size());
+    Row nextRow = new Row(nCopies(size, null));
+    for (int i = 0; i < size + 1; ++i) {
+      ColumnAccessor currentColumn = queryAccessors.get((minimalColumn.getId() + i) % size);
       ReconstructedObject reconstructed = currentColumn.reconstruct(element);
       if (reconstructed == null) {
         nextRow = null;
@@ -68,11 +69,10 @@ public class StandardTable implements Table {
   }
 
   private List<ColumnAccessor<?>> calculateQueryAccessors(Query query) {
-    Map<Integer, ValueRange> ranges = query.getColumnRange();
     List<ColumnAccessor<?>> queryAccessors = new ArrayList<ColumnAccessor<?>>(accessors.size());
 
     for (int i = 0; i < accessors.size(); ++i) {
-      ValueRange range = ranges.get(i);
+      ValueRange range = query.getRangeForColumn(i);
       ColumnAccessor<?> accessor = accessors.get(i);
 
       if (range != null) {

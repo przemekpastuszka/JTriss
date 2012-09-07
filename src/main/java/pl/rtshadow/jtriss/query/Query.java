@@ -10,14 +10,14 @@ import pl.rtshadow.jtriss.query.constraint.Constraint;
 
 public class Query {
   private int limit;
-  private final Map<Integer, ValueRange> columnRange = new HashMap<Integer, ValueRange>();
+  final Map<Integer, ValueRange> columnRange = new HashMap<Integer, ValueRange>();
 
   public int getLimit() {
     return limit;
   }
 
-  public Map<Integer, ValueRange> getColumnRange() {
-    return columnRange;
+  public ValueRange getRangeForColumn(int id) {
+    return columnRange.get(id);
   }
 
   public Query limit(int limit) {

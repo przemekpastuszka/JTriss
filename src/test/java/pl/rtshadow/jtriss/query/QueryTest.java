@@ -48,7 +48,7 @@ public class QueryTest {
 
     verify(rangeA, never()).intersect(any(ValueRange.class));
     verify(rangeB, never()).intersect(any(ValueRange.class));
-    assertThat(q.getColumnRange()).hasSize(2);
+    assertThat(q.columnRange).hasSize(2);
   }
 
   @Test
@@ -59,7 +59,7 @@ public class QueryTest {
 
     verify(rangeA).intersect(rangeB);
     verify(rangeB, never()).intersect(any(ValueRange.class));
-    assertThat(q.getColumnRange()).hasSize(1);
+    assertThat(q.columnRange).hasSize(1);
   }
 
   @Test(expected = IllegalArgumentException.class)
