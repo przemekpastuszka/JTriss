@@ -35,7 +35,8 @@ public class StandardTableTest {
   public void setUp() {
     table = new StandardTable(asList(columnA, columnB));
     table.factory = factory;
-    when(columnSet.select()).thenReturn(asList(row(1), row(2)));
+    when(query.getLimit()).thenReturn(7);
+    when(columnSet.select(7)).thenReturn(asList(row(1), row(2)));
   }
 
   @Test

@@ -5,6 +5,7 @@ import static java.util.Collections.nCopies;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -24,12 +25,13 @@ public class ColumnSet {
     this.size = accessors.size();
   }
 
-  public Collection<Row> select() {
-    ColumnAccessor<?> minimalColumn = findMinimalColumn();
+  public Collection<Row> select(int limit) {
+    ColumnAccessor minimalColumn = findMinimalColumn();
+    Iterator<ColumnElement> candidates = minimalColumn.iterator();
 
     Collection<Row> results = new LinkedList<Row>();
-    for (ColumnElement<?> element : minimalColumn) {
-      Row nextRow = retrieveNextRowFrom(element, minimalColumn);
+    for (int i = 0; i < limit && candidates.hasNext(); ++i) {
+      Row nextRow = retrieveNextRowFrom(candidates.next(), minimalColumn);
       if (nextRow != null) {
         results.add(nextRow);
       }

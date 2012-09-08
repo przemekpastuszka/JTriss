@@ -6,6 +6,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static pl.rtshadow.jtriss.query.Query.NO_LIMIT;
 import static pl.rtshadow.jtriss.test.TestColumnElement.chain;
 import static pl.rtshadow.jtriss.test.TestColumnElement.element;
 import static pl.rtshadow.jtriss.test.TestObjects.row;
@@ -33,7 +34,7 @@ public class ColumnSetTest {
   public void returnsEmptyCollectionWhenNoElements() {
     createColumns(1);
 
-    assertThat(columnSet.select()).isEmpty();
+    assertThat(columnSet.select(NO_LIMIT)).isEmpty();
   }
 
   @Test
@@ -41,7 +42,15 @@ public class ColumnSetTest {
     createColumns(1);
     putInColumn(columns.get(0), chain(1, 1), chain(2, 2));
 
-    assertThat(columnSet.select()).containsOnly(row(1), row(2));
+    assertThat(columnSet.select(NO_LIMIT)).containsOnly(row(1), row(2));
+  }
+
+  @Test
+  public void makesUseOfLimit() {
+    createColumns(1);
+    putInColumn(columns.get(0), chain(1, 1), chain(2, 2));
+
+    assertThat(columnSet.select(1)).containsOnly(row(1));
   }
 
   @Test
@@ -53,7 +62,7 @@ public class ColumnSetTest {
     when(columns.get(0).reconstruct(hasSameValueAs(element(1)))).thenReturn(
         reconstructed(chain(1, 10)), reconstructed(element(8)));
 
-    assertThat(columnSet.select()).containsOnly(row(8, 10));
+    assertThat(columnSet.select(NO_LIMIT)).containsOnly(row(8, 10));
   }
 
   @Test
@@ -62,7 +71,7 @@ public class ColumnSetTest {
     putInColumn(columns.get(0), chain(1, 10), chain(2, 20));
     putInColumn(columns.get(1), chain(10, 1), chain(30, 3), chain(40, 4));
 
-    assertThat(columnSet.select()).containsOnly(row(1, 10));
+    assertThat(columnSet.select(NO_LIMIT)).containsOnly(row(1, 10));
   }
 
   @Test
@@ -71,7 +80,7 @@ public class ColumnSetTest {
     putInColumn(columns.get(0), chain(1, 10), chain(2, 20));
     putInColumn(columns.get(1), chain(3, 30));
 
-    assertThat(columnSet.select()).isEmpty();
+    assertThat(columnSet.select(NO_LIMIT)).isEmpty();
     verify(columns.get(0), never()).iterator();
   }
 

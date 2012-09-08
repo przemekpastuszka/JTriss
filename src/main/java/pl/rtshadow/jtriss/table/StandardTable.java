@@ -25,7 +25,7 @@ public class StandardTable implements Table {
   @Override
   public Collection<Row> select(Query query) {
     ColumnSet columnSet = factory.createColumnSet(calculateQueryAccessors(query));
-    return columnSet.select();
+    return columnSet.select(query.getLimit());
   }
 
   private List<ColumnAccessor> calculateQueryAccessors(Query query) {

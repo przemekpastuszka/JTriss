@@ -9,6 +9,8 @@ import pl.rtshadow.jtriss.common.ValueRange;
 import pl.rtshadow.jtriss.query.constraint.Constraint;
 
 public class Query {
+  public final static int NO_LIMIT = Integer.MAX_VALUE;
+
   private int limit;
   final Map<Integer, ValueRange> columnRange = new HashMap<Integer, ValueRange>();
 
@@ -26,7 +28,7 @@ public class Query {
   }
 
   public static Query query() {
-    return new Query();
+    return new Query().limit(NO_LIMIT);
   }
 
   public <T extends Comparable<? super T>>
