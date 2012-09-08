@@ -1,7 +1,5 @@
 package pl.rtshadow.jtriss.table;
 
-import static java.util.Collections.nCopies;
-
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -41,7 +39,7 @@ public class ColumnSet {
   }
 
   private Row retrieveNextRowFrom(ColumnElement<?> element, ColumnAccessor<?> minimalColumn) {
-    Row nextRow = new Row(nCopies(size, null));
+    Row nextRow = new Row(size);
     for (int i = 0; i < size + 1; ++i) {
       ColumnAccessor currentColumn = accessors.get((minimalColumn.getId() + i) % size);
       ReconstructedObject reconstructed = currentColumn.reconstruct(element);

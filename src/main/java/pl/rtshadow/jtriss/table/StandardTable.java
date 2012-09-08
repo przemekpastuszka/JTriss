@@ -31,7 +31,7 @@ public class StandardTable implements Table {
   private List<ColumnAccessor> calculateQueryAccessors(Query query) {
     List<ColumnAccessor> queryAccessors = new ArrayList<ColumnAccessor>(accessors.size());
 
-    for (int i = 0; i < accessors.size(); ++i) {
+    for (int i = 0; i < size; ++i) {
       ValueRange range = query.getRangeForColumn(i);
       ColumnAccessor<?> accessor = accessors.get(i);
 
