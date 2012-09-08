@@ -1,5 +1,6 @@
 package pl.rtshadow.jtriss.test;
 
+import static java.util.Arrays.asList;
 import static pl.rtshadow.jtriss.test.TestColumnElement.element;
 
 import java.util.ArrayList;
@@ -9,9 +10,14 @@ import pl.rtshadow.jtriss.column.ColumnConstructor;
 import pl.rtshadow.jtriss.column.SortedColumn;
 import pl.rtshadow.jtriss.column.element.StandardColumnElement;
 import pl.rtshadow.jtriss.column.unmodifiable.UnmodifiableColumnConstructor;
+import pl.rtshadow.jtriss.row.Row;
 
 public class TestObjects {
   public static final int TEST_COLUMN_ID = 0;
+
+  public static Row row(Integer... values) {
+    return new Row(asList(values));
+  }
 
   public static SortedColumn<Integer> generateSortedColumnFrom(Integer... values) {
     ColumnConstructor<Integer> constructor = UnmodifiableColumnConstructor.<Integer> constructor(TEST_COLUMN_ID);
