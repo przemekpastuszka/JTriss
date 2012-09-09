@@ -1,6 +1,7 @@
 package pl.rtshadow.jtriss.column.unmodifiable;
 
 import static org.fest.assertions.Assertions.assertThat;
+import static pl.rtshadow.jtriss.common.ValueRange.INFINITE;
 import static pl.rtshadow.jtriss.common.ValueRange.finiteRange;
 import static pl.rtshadow.jtriss.common.ValueRange.leftFiniteRange;
 import static pl.rtshadow.jtriss.common.ValueRange.rightFiniteRange;
@@ -43,6 +44,7 @@ public class UnmodifiableSortedColumnTest {
 
   @Test
   public void createsValidSubColumn() {
+    assertSubColumnContainsOnly(INFINITE, 0, 1, 2, 3, 4);
     assertSubColumnContainsOnly(finiteRange(2, 5), 2, 3, 4);
     assertSubColumnContainsOnly(finiteRange(5, 5));
     assertSubColumnContainsOnly(leftFiniteRange(3), 3, 4);

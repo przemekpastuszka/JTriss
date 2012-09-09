@@ -49,4 +49,12 @@ public class ScalarColumnAccessor<T extends Comparable<? super T>> extends Abstr
       return new ScalarColumnAccessor<T>(type, constructor.generate());
     }
   }
+
+  @Override
+  public void prepareMainColumnForReconstruction() {
+  }
+
+  @Override
+  public void finishReconstruction() {
+  }
 }

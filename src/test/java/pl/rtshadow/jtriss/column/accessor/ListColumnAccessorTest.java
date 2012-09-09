@@ -6,8 +6,8 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static pl.rtshadow.jtriss.column.accessor.ListColumnAccessor.generator;
-import static pl.rtshadow.jtriss.test.TestColumnElement.element;
 import static pl.rtshadow.jtriss.test.TestColumnElement.chain;
+import static pl.rtshadow.jtriss.test.TestColumnElement.element;
 import static pl.rtshadow.jtriss.test.TestObjects.TEST_COLUMN_ID;
 
 import java.util.List;
@@ -19,6 +19,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import pl.rtshadow.jtriss.column.element.ColumnElement;
 import pl.rtshadow.jtriss.column.element.ModifiableColumnElement;
+import pl.rtshadow.jtriss.test.TestColumnElement;
 import pl.rtshadow.jtriss.test.TestFactory;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -34,29 +35,52 @@ public class ListColumnAccessorTest extends AbstractColumnAccessorTest {
   public void returnsTwoElementsFromTheSameColumn() {
     when(column.contains(any(ColumnElement.class))).thenReturn(false, true, false);
 
-    ColumnAccessor<Integer> accessor = accessorGenerator.prepareColumnAccessor();
-    ReconstructedObject<Integer> reconstructed = accessor.reconstruct(testList());
+    ReconstructedObject<Integer> reconstructed = reconstruct(testList());
 
-    assertThat(reconstructed.getObject()).isInstanceOf(List.class);
-    List<Integer> objects = (List<Integer>) reconstructed.getObject();
-
-    assertThat(objects).hasSize(2).contains(7, 8);
-
+    assertReconstructedContainsOnly(reconstructed.getObject(), 6, 7, 8);
     assertThat(reconstructed.getNextElementInRow().getValue()).isEqualTo(9);
   }
 
-  private ModifiableColumnElement<Integer> testList() {
-    return chain(element(7), element(8), element(9).inColumn(TEST_COLUMN_ID + 1));
+  private void assertReconstructedContainsOnly(Object reconstructed, Integer... elements) {
+    assertThat(reconstructed).isInstanceOf(List.class);
+    List<Integer> objects = (List<Integer>) reconstructed;
+
+    assertThat(objects).containsOnly(elements);
+  }
+
+  private TestColumnElement testList() {
+    return chain(
+        element(6).atPosition(0),
+        element(7).atPosition(1),
+        element(8).atPosition(2), element(9).inColumn(TEST_COLUMN_ID + 1));
+  }
+
+  @Test
+  public void reconstructsOnlyWhenStartedFromFirst() {
+    when(column.contains(any(ColumnElement.class))).thenReturn(true);
+
+    ColumnAccessor<Integer> accessor = accessorGenerator.prepareColumnAccessor();
+    accessor.prepareMainColumnForReconstruction();
+    accessor.reconstruct(testList().getNextElementInTheRow());
+
+    assertThat(accessor.reconstruct(testList())).isNull();
+
+    accessor.finishReconstruction();
+    assertReconstructedContainsOnly(
+        accessor.reconstruct(testList()).getObject(),
+        6, 7, 8);
   }
 
   @Test
   public void returnsNullIfListNotIncludedInColumn() {
     when(column.contains(any(ColumnElement.class))).thenReturn(false);
 
-    ColumnAccessor<Integer> accessor = accessorGenerator.prepareColumnAccessor();
-    ReconstructedObject<Integer> reconstructed = accessor.reconstruct(testList());
+    assertThat(reconstruct(testList())).isNull();
+  }
 
-    assertThat(reconstructed).isNull();
+  private ReconstructedObject<Integer> reconstruct(TestColumnElement element) {
+    ColumnAccessor<Integer> accessor = accessorGenerator.prepareColumnAccessor();
+    return accessor.reconstruct(element);
   }
 
   @Test

@@ -17,14 +17,23 @@ public class ListColumnAccessor<T extends Comparable<? super T>> extends Abstrac
     this.type = type;
   }
 
+  private int startPoint = -1;
+  private boolean mainColumn = false;
+
   @Override
   public ReconstructedObject<T> reconstruct(ColumnElement<T> element) {
     boolean hasAnyElementInsideColumn = false;
     int originalColumnId = element.getColumnId();
+    setUpStartPoint(element);
 
     ArrayList<T> valuesList = new ArrayList<T>();
     while (element.getColumnId() == originalColumnId) {
-      hasAnyElementInsideColumn |= column.contains(element);
+      if (column.contains(element)) {
+        if (mainColumn && isNotFirstListElementInColumn(element)) {
+          return null;
+        }
+        hasAnyElementInsideColumn = true;
+      }
       valuesList.add(element.getValue());
       element = element.getNextElementInTheRow();
     }
@@ -33,6 +42,16 @@ public class ListColumnAccessor<T extends Comparable<? super T>> extends Abstrac
       return new ReconstructedObject<T>(valuesList, element);
     }
     return null;
+  }
+
+  private boolean isNotFirstListElementInColumn(ColumnElement<T> element) {
+    return element.getPositionInColumn() < startPoint;
+  }
+
+  private void setUpStartPoint(ColumnElement<T> element) {
+    if (mainColumn && startPoint < 0) {
+      startPoint = element.getPositionInColumn();
+    }
   }
 
   @Override
@@ -97,5 +116,15 @@ public class ListColumnAccessor<T extends Comparable<? super T>> extends Abstrac
     public ColumnAccessor<T> prepareColumnAccessor() {
       return new ListColumnAccessor<T>(type, constructor.generate());
     }
+  }
+
+  @Override
+  public void prepareMainColumnForReconstruction() {
+    mainColumn = true;
+  }
+
+  @Override
+  public void finishReconstruction() {
+    mainColumn = false;
   }
 }

@@ -6,6 +6,10 @@ import pl.rtshadow.jtriss.common.ValueRange;
 public interface ColumnAccessor<T extends Comparable<? super T>>
     extends Iterable<ColumnElement<T>> {
 
+  void prepareMainColumnForReconstruction();
+
+  void finishReconstruction();
+
   ReconstructedObject<T> reconstruct(ColumnElement<T> firstElement);
 
   ColumnAccessor<T> subColumn(ValueRange<T> range);

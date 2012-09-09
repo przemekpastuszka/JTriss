@@ -3,6 +3,8 @@ package pl.rtshadow.jtriss.common;
 import static org.apache.commons.lang3.BooleanUtils.negate;
 
 public class ValueRange<T extends Comparable<? super T>> {
+  public final static ValueRange INFINITE = new ValueRange(null, null);
+
   private T left, right;
   private boolean leftOpen = false, rightOpen = false;
 

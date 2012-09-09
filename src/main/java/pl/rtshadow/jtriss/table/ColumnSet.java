@@ -29,10 +29,14 @@ public class ColumnSet {
 
     Collection<Row> results = new LinkedList<Row>();
     for (int i = 0; i < limit && candidates.hasNext(); ++i) {
+      minimalColumn.prepareMainColumnForReconstruction();
+
       Row nextRow = retrieveNextRowFrom(candidates.next(), minimalColumn);
       if (nextRow != null) {
         results.add(nextRow);
       }
+
+      minimalColumn.finishReconstruction();
     }
 
     return results;

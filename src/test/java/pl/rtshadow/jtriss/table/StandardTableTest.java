@@ -3,6 +3,7 @@ package pl.rtshadow.jtriss.table;
 import static java.util.Arrays.asList;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.mockito.Mockito.when;
+import static pl.rtshadow.jtriss.common.ValueRange.INFINITE;
 import static pl.rtshadow.jtriss.test.TestObjects.row;
 
 import org.junit.Before;
@@ -21,7 +22,7 @@ public class StandardTableTest {
   @Mock
   private Query query;
   @Mock
-  private ColumnAccessor columnA, subColumnA, columnB;
+  private ColumnAccessor columnA, subColumnA, columnB, subColumnB;
   @Mock
   private TrissFactory factory;
   @Mock
@@ -40,17 +41,11 @@ public class StandardTableTest {
   }
 
   @Test
-  public void choosesAppropriateAccessorInSimpleCase() {
-    when(factory.createColumnSet(asList(columnA, columnB))).thenReturn(columnSet);
-
-    assertThat(table.select(query)).containsOnly(row(1), row(2));
-  }
-
-  @Test
   public void choosesAppropriateAccessorsWhenQueryHasRange() {
     when(query.getRangeForColumn(0)).thenReturn(rangeA);
     when(columnA.subColumn(rangeA)).thenReturn(subColumnA);
-    when(factory.createColumnSet(asList(subColumnA, columnB))).thenReturn(columnSet);
+    when(columnB.subColumn(INFINITE)).thenReturn(subColumnB);
+    when(factory.createColumnSet(asList(subColumnA, subColumnB))).thenReturn(columnSet);
 
     assertThat(table.select(query)).containsOnly(row(1), row(2));
   }

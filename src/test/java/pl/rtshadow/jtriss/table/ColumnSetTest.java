@@ -4,6 +4,7 @@ import static java.util.Arrays.asList;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static pl.rtshadow.jtriss.query.Query.NO_LIMIT;
@@ -75,13 +76,17 @@ public class ColumnSetTest {
   }
 
   @Test
-  public void neverIteratesBigColumn() {
+  public void choosesValidMainColumn() {
     createColumns(2);
-    putInColumn(columns.get(0), chain(1, 10), chain(2, 20));
-    putInColumn(columns.get(1), chain(3, 30));
+    putInColumn(columns.get(0), chain(1, 10), chain(2, 20), chain(4, 40));
+    putInColumn(columns.get(1), chain(3, 30), chain(5, 50));
 
     assertThat(columnSet.select(NO_LIMIT)).isEmpty();
+
     verify(columns.get(0), never()).iterator();
+    verify(columns.get(0), never()).prepareMainColumnForReconstruction();
+    verify(columns.get(1), times(2)).prepareMainColumnForReconstruction();
+    verify(columns.get(1), times(2)).finishReconstruction();
   }
 
   private void createColumns(int number) {

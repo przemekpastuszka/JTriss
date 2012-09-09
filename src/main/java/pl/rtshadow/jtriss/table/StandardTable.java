@@ -1,5 +1,7 @@
 package pl.rtshadow.jtriss.table;
 
+import static pl.rtshadow.jtriss.common.ValueRange.INFINITE;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -38,7 +40,7 @@ public class StandardTable implements Table {
       if (range != null) {
         queryAccessors.add(accessor.subColumn(range));
       } else {
-        queryAccessors.add(accessor);
+        queryAccessors.add(accessor.subColumn(INFINITE));
       }
     }
     return queryAccessors;
