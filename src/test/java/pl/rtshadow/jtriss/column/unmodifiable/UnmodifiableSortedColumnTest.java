@@ -20,7 +20,7 @@ import pl.rtshadow.jtriss.common.ValueRange;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UnmodifiableSortedColumnTest {
-  private final SortedColumn<Integer> column = generateSortedColumnFrom(0, 1, 2, 3, 4);
+  private SortedColumn<Integer> column = generateSortedColumnFrom(0, 1, 2, 3, 4);
 
   @Test
   public void hasValidId() {
@@ -40,6 +40,13 @@ public class UnmodifiableSortedColumnTest {
   @Test
   public void containsElementsAtAppropriatePositions() {
     assertColumnContainsOnly(column, 0, 1, 2, 3, 4);
+  }
+
+  @Test
+  public void worksIfInitialListIsEmpty() {
+    column = generateSortedColumnFrom();
+
+    assertSubColumnContainsOnly(finiteRange(2, 5));
   }
 
   @Test

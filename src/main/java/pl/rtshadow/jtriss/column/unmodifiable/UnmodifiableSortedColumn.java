@@ -22,6 +22,10 @@ public class UnmodifiableSortedColumn<T extends Comparable<? super T>> implement
 
   @Override
   public SortedColumn<T> getSubColumn(ValueRange<T> range) {
+    if (elements.isEmpty()) {
+      return this;
+    }
+
     int leftIndex = 0;
     int rightIndex = elements.size() - 1;
 

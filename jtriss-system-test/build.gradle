@@ -1,0 +1,6 @@
+dependencies {
+    compile project(":")
+    
+    compile 'junit:junit:4.10'
+    compile 'org.easytesting:fest-assert:1.4'
+}
