@@ -10,6 +10,10 @@ public class GreaterThanConstraint<T extends Comparable<? super T>> implements C
     range = leftFiniteRange(value).openOnTheLeft();
   }
 
+  public static <T extends Comparable<? super T>> Constraint<T> greaterThan(T value) {
+    return new GreaterThanConstraint<T>(value);
+  }
+
   @Override
   public ValueRange<T> reduceToRange() {
     return range;

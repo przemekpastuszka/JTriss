@@ -7,6 +7,13 @@ public class Row extends ArrayList {
   public Row() {
   }
 
+  public Row(Object... elements) {
+    super(elements.length);
+    for (Object element : elements) {
+      add(element);
+    }
+  }
+
   public Row(Collection c) {
     super(c);
   }
