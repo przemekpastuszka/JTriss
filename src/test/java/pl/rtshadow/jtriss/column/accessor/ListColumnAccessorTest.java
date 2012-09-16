@@ -12,6 +12,7 @@ import static pl.rtshadow.jtriss.test.TestObjects.TEST_COLUMN_ID;
 
 import java.util.List;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -85,9 +86,11 @@ public class ListColumnAccessorTest extends AbstractColumnAccessorTest {
 
   @Test
   public void addsEachObjectInGivenList() {
-    ModifiableColumnElement<Integer> newElement = accessorGenerator.insert(asList(7, 8), element(9));
+    Pair<ModifiableColumnElement<Integer>, ModifiableColumnElement<Integer>> newElements =
+        accessorGenerator.insert(asList(7, 8), element(9));
 
-    assertThat(newElement).isEqualTo(element(8).withNext(element(9)));
+    assertThat(newElements.getLeft()).isEqualTo(chain(element(7), element(8), element(9)));
+    assertThat(newElements.getRight()).isEqualTo(element(8).withNext(element(9)));
     verify(constructor).add(chain(element(7), element(8), element(9)));
     verify(constructor).add(element(8).withNext(element(9)));
   }

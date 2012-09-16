@@ -10,6 +10,7 @@ import pl.rtshadow.jtriss.column.accessor.ColumnAccessorGenerator;
 import pl.rtshadow.jtriss.column.element.ModifiableColumnElement;
 import pl.rtshadow.jtriss.factory.TrissFactory;
 import pl.rtshadow.jtriss.table.ColumnSet;
+import pl.rtshadow.jtriss.table.Table;
 
 public class TestFactory implements TrissFactory {
 
@@ -37,6 +38,11 @@ public class TestFactory implements TrissFactory {
 
   @Override
   public ColumnSet createColumnSet(List<ColumnAccessor> columns) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public Table prepareTable(List<ColumnAccessor> columns) {
     throw new UnsupportedOperationException();
   }
 }

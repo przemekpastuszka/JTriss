@@ -7,6 +7,7 @@ import pl.rtshadow.jtriss.column.accessor.ColumnAccessor;
 import pl.rtshadow.jtriss.column.accessor.ColumnAccessorGenerator;
 import pl.rtshadow.jtriss.column.element.ModifiableColumnElement;
 import pl.rtshadow.jtriss.table.ColumnSet;
+import pl.rtshadow.jtriss.table.Table;
 
 public interface TrissFactory {
 
@@ -22,4 +23,6 @@ public interface TrissFactory {
       createElement(Class<T> type, Object value);
 
   ColumnSet createColumnSet(List<ColumnAccessor> columns);
+
+  Table prepareTable(List<ColumnAccessor> columns);
 }

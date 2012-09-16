@@ -1,5 +1,7 @@
 package pl.rtshadow.jtriss.column.accessor;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import pl.rtshadow.jtriss.column.ColumnConstructor;
 import pl.rtshadow.jtriss.column.SortedColumn;
 import pl.rtshadow.jtriss.column.element.ColumnElement;
@@ -36,12 +38,13 @@ public class ScalarColumnAccessor<T extends Comparable<? super T>> extends Abstr
     }
 
     @Override
-    public ModifiableColumnElement<T> insert(Object value, ColumnElement<T> nextElement) {
+    public Pair<ModifiableColumnElement<T>, ModifiableColumnElement<T>>
+        insert(Object value, ColumnElement<T> nextElement) {
       ModifiableColumnElement<T> element = factory.createElement(type, value);
       element.setNextElement(nextElement);
       constructor.add(element);
 
-      return element;
+      return Pair.of(element, element);
     }
 
     @Override

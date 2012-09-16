@@ -5,6 +5,8 @@ import static org.apache.commons.lang3.BooleanUtils.negate;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import pl.rtshadow.jtriss.column.ColumnConstructor;
 import pl.rtshadow.jtriss.column.SortedColumn;
 import pl.rtshadow.jtriss.column.element.ColumnElement;
@@ -70,7 +72,8 @@ public class ListColumnAccessor<T extends Comparable<? super T>> extends Abstrac
     }
 
     @Override
-    public ModifiableColumnElement<T> insert(Object object, ColumnElement<T> nextElement) {
+    public Pair<ModifiableColumnElement<T>, ModifiableColumnElement<T>>
+        insert(Object object, ColumnElement<T> nextElement) {
       List<T> valuesList = retrieveNonEmptyListFrom(object);
       List<ModifiableColumnElement<T>> columnElements = mapValuesToColumnElements(valuesList);
 
@@ -81,7 +84,7 @@ public class ListColumnAccessor<T extends Comparable<? super T>> extends Abstrac
       ModifiableColumnElement<T> lastElement = columnElements.get(columnElements.size() - 1);
       setNextElementAndAddToConstructor(lastElement, nextElement);
 
-      return lastElement;
+      return Pair.of(columnElements.get(0), lastElement);
     }
 
     private void setNextElementAndAddToConstructor(ModifiableColumnElement<T> currentElement, ColumnElement<T> next) {

@@ -11,6 +11,8 @@ import pl.rtshadow.jtriss.column.element.ModifiableColumnElement;
 import pl.rtshadow.jtriss.column.element.StandardColumnElement;
 import pl.rtshadow.jtriss.column.unmodifiable.UnmodifiableColumnConstructor;
 import pl.rtshadow.jtriss.table.ColumnSet;
+import pl.rtshadow.jtriss.table.StandardTable;
+import pl.rtshadow.jtriss.table.Table;
 
 public class StandardFactory implements TrissFactory {
   @Override
@@ -45,5 +47,10 @@ public class StandardFactory implements TrissFactory {
   @Override
   public ColumnSet createColumnSet(List<ColumnAccessor> columns) {
     return new ColumnSet(columns);
+  }
+
+  @Override
+  public Table prepareTable(List<ColumnAccessor> columns) {
+    return new StandardTable(columns);
   }
 }

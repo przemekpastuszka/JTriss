@@ -7,6 +7,7 @@ import static org.mockito.Mockito.when;
 import static pl.rtshadow.jtriss.column.accessor.ScalarColumnAccessor.generator;
 import static pl.rtshadow.jtriss.test.TestColumnElement.element;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -39,9 +40,11 @@ public class ScalarColumnAccessorTest extends AbstractColumnAccessorTest {
 
   @Test
   public void treatsAnyObjectAsScalar() {
-    ModifiableColumnElement<Integer> newElement = accessorGenerator.insert(7, element(8));
+    Pair<ModifiableColumnElement<Integer>, ModifiableColumnElement<Integer>> newElements =
+        accessorGenerator.insert(7, element(8));
 
-    assertThat(newElement).isEqualTo(element(7).withNext(element(8)));
+    assertThat(newElements.getLeft()).isEqualTo(newElements.getRight());
+    assertThat(newElements.getLeft()).isEqualTo(element(7).withNext(element(8)));
     verify(constructor).add(element(7).withNext(element(8)));
   }
 
