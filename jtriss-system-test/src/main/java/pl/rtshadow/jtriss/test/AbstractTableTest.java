@@ -19,7 +19,7 @@ import pl.rtshadow.jtriss.table.TableConstructor;
 public class AbstractTableTest {
   private TableConstructor constructor = new StandardTableConstructor(
       new Schema().
-          addColumn(Integer.class, SCALAR).
+          addColumn(Double.class, SCALAR).
           addColumn(Integer.class, LIST).
           addColumn(String.class, SCALAR));
 

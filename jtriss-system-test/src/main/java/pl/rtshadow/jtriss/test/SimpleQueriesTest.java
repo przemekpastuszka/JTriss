@@ -15,10 +15,10 @@ import pl.rtshadow.jtriss.row.Row;
 public class SimpleQueriesTest extends AbstractTableTest {
   @Before
   public void setUp() {
-    inputRows.add(new Row(7, asList(1, 2), "belial"));
-    inputRows.add(new Row(1, asList(7), "merihem"));
-    inputRows.add(new Row(8, asList(3), "astaroth"));
-    inputRows.add(new Row(3, asList(0, 10, 9), "belphegor"));
+    inputRows.add(new Row(7.0, asList(1, 2), "belial"));
+    inputRows.add(new Row(1.0, asList(7), "merihem"));
+    inputRows.add(new Row(8.0, asList(3), "astaroth"));
+    inputRows.add(new Row(3.0, asList(0, 10, 9), "belphegor"));
 
     prepareTable();
   }
@@ -26,8 +26,8 @@ public class SimpleQueriesTest extends AbstractTableTest {
   @Test
   public void returnsEmptyResultForDisjointConstraints() {
     select(query().
-        and(0, lessOrEqual(10), Integer.class).
-        and(0, greaterOrEqual(11), Integer.class));
+        and(0, lessOrEqual(10.0)).
+        and(0, greaterOrEqual(11.0)));
 
     assertThat(result).isEmpty();
   }
@@ -35,29 +35,29 @@ public class SimpleQueriesTest extends AbstractTableTest {
   @Test
   public void returnsEmptyResultWhenComputedRangesOnEachColumnDoNotIntersect() {
     select(query().
-        and(0, lessOrEqual(7), Integer.class).
-        and(2, equalsTo("astaroth"), String.class));
+        and(0, lessOrEqual(7.0)).
+        and(2, equalsTo("astaroth")));
 
     assertThat(result).isEmpty();
   }
 
   @Test
   public void returnsLastRowForContainsConstraint() {
-    select(query().and(1, equalsTo(10), Integer.class));
+    select(query().and(1, equalsTo(10)));
 
     assertResultContainsAllOf(3);
   }
 
   @Test
   public void returnsSecondRowForContainsConstraint() {
-    select(query().and(1, equalsTo(7), Integer.class));
+    select(query().and(1, equalsTo(7)));
 
     assertResultContainsAllOf(1);
   }
 
   @Test
   public void returnsOneRowWithLimit() {
-    select(query().and(0, greaterOrEqual(7), Integer.class).limit(1));
+    select(query().and(0, greaterOrEqual(7.0)).limit(1));
 
     assertResultContainsAnyOf(0, 2);
     assertThat(result).hasSize(1);
@@ -66,15 +66,15 @@ public class SimpleQueriesTest extends AbstractTableTest {
   @Test
   public void returnsOneRowWithTwoConstraintsOnOneColumn() {
     select(query().
-        and(0, greaterOrEqual(7), Integer.class).
-        and(0, lessOrEqual(7), Integer.class));
+        and(0, greaterOrEqual(7.0)).
+        and(0, lessOrEqual(7.0)));
 
     assertResultContainsAllOf(0);
   }
 
   @Test
   public void returnsTwoRows() {
-    select(query().and(0, greaterOrEqual(7), Integer.class));
+    select(query().and(0, greaterOrEqual(7.0)));
 
     assertResultContainsAllOf(0, 2);
   }

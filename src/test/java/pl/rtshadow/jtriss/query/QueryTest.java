@@ -43,8 +43,8 @@ public class QueryTest {
   @Test
   public void doesNotIntersectRangesWhenConstraintsAreOnDifferentColumns() {
     Query q = query()
-        .and(1, constraint, Integer.class)
-        .and(2, constraint, Integer.class);
+        .and(1, constraint)
+        .and(2, constraint);
 
     verify(rangeA, never()).intersect(any(ValueRange.class));
     verify(rangeB, never()).intersect(any(ValueRange.class));
@@ -54,8 +54,8 @@ public class QueryTest {
   @Test
   public void intersectRangesWhenConstraintsAreOnTheSameColumn() {
     Query q = query()
-        .and(1, constraint, Integer.class)
-        .and(1, constraint, Integer.class);
+        .and(1, constraint)
+        .and(1, constraint);
 
     verify(rangeA).intersect(rangeB);
     verify(rangeB, never()).intersect(any(ValueRange.class));
@@ -65,7 +65,7 @@ public class QueryTest {
   @Test(expected = IllegalArgumentException.class)
   public void throwsExceptionWhenDifferentConstraintTypesGivenOnOneColumn() {
     query()
-        .and(1, constraint, Integer.class)
-        .and(1, constraintWithStringType, String.class);
+        .and(1, constraint)
+        .and(1, constraintWithStringType);
   }
 }

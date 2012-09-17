@@ -1,7 +1,5 @@
 package pl.rtshadow.jtriss.query;
 
-import static org.apache.commons.lang3.BooleanUtils.negate;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,10 +30,10 @@ public class Query {
   }
 
   public <T extends Comparable<? super T>>
-      Query and(int columnId, Constraint<T> constraint, Class<T> constraintType) {
+      Query and(int columnId, Constraint<T> constraint) {
 
     if (columnRange.containsKey(columnId)) {
-      ValueRange<T> valueRange = retrieveTypedValueRange(columnId, constraintType);
+      ValueRange<T> valueRange = columnRange.get(columnId);
       columnRange.put(columnId, valueRange.intersect(constraint.reduceToRange()));
 
     } else {
@@ -43,15 +41,5 @@ public class Query {
     }
 
     return this;
-  }
-
-  @SuppressWarnings({ "unchecked", "rawtypes" })
-  private <T extends Comparable<? super T>> ValueRange<T> retrieveTypedValueRange(int columnId, Class<T> constraintType) {
-    ValueRange valueRange = columnRange.get(columnId);
-    if (negate(valueRange.getType().equals(constraintType))) {
-      throw new IllegalArgumentException("Wrong constraint type given. Wanted: "
-          + valueRange.getType() + ", got: " + constraintType);
-    }
-    return valueRange;
   }
 }

@@ -42,6 +42,31 @@ public class ListColumnAccessorTest extends AbstractColumnAccessorTest {
     assertThat(reconstructed.getNextElementInRow().getValue()).isEqualTo(9);
   }
 
+  @Test
+  public void reconstructsOnlyWhenStartedFromFirst() {
+    when(column.contains(any(ColumnElement.class))).thenReturn(true);
+
+    ColumnAccessor<Integer> accessor = accessorGenerator.prepareColumnAccessor();
+
+    accessor.prepareMainColumnForReconstruction();
+    assertReconstructedContainsOnly(
+        accessor.reconstruct(testList()).getObject(),
+        6, 7, 8);
+    accessor.finishReconstruction();
+
+    accessor.prepareMainColumnForReconstruction();
+    accessor.reconstruct(testList().getNextElementInTheRow());
+    assertThat(accessor.reconstruct(testList())).isNull();
+    accessor.finishReconstruction();
+  }
+
+  @Test
+  public void returnsNullIfListNotIncludedInColumn() {
+    when(column.contains(any(ColumnElement.class))).thenReturn(false);
+
+    assertThat(reconstruct(testList())).isNull();
+  }
+
   private void assertReconstructedContainsOnly(Object reconstructed, Integer... elements) {
     assertThat(reconstructed).isInstanceOf(List.class);
     List<Integer> objects = (List<Integer>) reconstructed;
@@ -54,29 +79,6 @@ public class ListColumnAccessorTest extends AbstractColumnAccessorTest {
         element(6).atPosition(0),
         element(7).atPosition(1),
         element(8).atPosition(2), element(9).inColumn(TEST_COLUMN_ID + 1));
-  }
-
-  @Test
-  public void reconstructsOnlyWhenStartedFromFirst() {
-    when(column.contains(any(ColumnElement.class))).thenReturn(true);
-
-    ColumnAccessor<Integer> accessor = accessorGenerator.prepareColumnAccessor();
-    accessor.prepareMainColumnForReconstruction();
-    accessor.reconstruct(testList().getNextElementInTheRow());
-
-    assertThat(accessor.reconstruct(testList())).isNull();
-
-    accessor.finishReconstruction();
-    assertReconstructedContainsOnly(
-        accessor.reconstruct(testList()).getObject(),
-        6, 7, 8);
-  }
-
-  @Test
-  public void returnsNullIfListNotIncludedInColumn() {
-    when(column.contains(any(ColumnElement.class))).thenReturn(false);
-
-    assertThat(reconstruct(testList())).isNull();
   }
 
   private ReconstructedObject<Integer> reconstruct(TestColumnElement element) {

@@ -123,6 +123,7 @@ public class ListColumnAccessor<T extends Comparable<? super T>> extends Abstrac
 
   @Override
   public void prepareMainColumnForReconstruction() {
+    startPoint = -1;
     mainColumn = true;
   }
 

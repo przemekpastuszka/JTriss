@@ -10,7 +10,7 @@ public class EmptyTableTest extends AbstractTableTest {
   @Test
   public void returnsEmptyResultForAQuery() {
     prepareTable();
-    select(query().and(0, lessThan(10), Integer.class));
+    select(query().and(0, lessThan(10.0)));
 
     assertThat(result).isEmpty();
   }
