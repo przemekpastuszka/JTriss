@@ -13,7 +13,7 @@
    See the License for the specific language governing permissions and
    limitations under the License.
  */
- 
+
 package pl.rtshadow.jtriss.query;
 
 import static org.fest.assertions.Assertions.assertThat;
@@ -76,12 +76,5 @@ public class QueryTest {
     verify(rangeA).intersect(rangeB);
     verify(rangeB, never()).intersect(any(ValueRange.class));
     assertThat(q.columnRange).hasSize(1);
-  }
-
-  @Test(expected = IllegalArgumentException.class)
-  public void throwsExceptionWhenDifferentConstraintTypesGivenOnOneColumn() {
-    query()
-        .and(1, constraint)
-        .and(1, constraintWithStringType);
   }
 }

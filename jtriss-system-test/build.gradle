@@ -4,3 +4,7 @@ dependencies {
     compile 'junit:junit:4.10'
     compile 'org.easytesting:fest-assert:1.4'
 }
+
+task runSystemTests(type: Test) {
+    testClassesDir = sourceSets.main.output.classesDir
+}
