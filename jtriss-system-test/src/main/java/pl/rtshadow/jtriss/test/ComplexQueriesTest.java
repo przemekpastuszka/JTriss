@@ -42,4 +42,28 @@ public class ComplexQueriesTest extends AbstractTableTest {
 
     assertResultContainsAllOf(2);
   }
+
+  @Test
+  public void returnsFirstTwoRows() {
+    select(query().and(1, equalsTo(9)));
+
+    assertResultContainsAllOf(0, 1);
+  }
+
+  @Test
+  public void returnsAnswerForConstraintOnAllColumns() {
+    select(query().
+        and(0, lessOrEqual(1.7)).
+        and(1, lessOrEqual(0)).
+        and(2, lessOrEqual("s")));
+
+    assertResultContainsAllOf(3);
+  }
+
+  @Test
+  public void returnsAllRowsWhenNoConstraintGiven() {
+    select(query());
+
+    assertResultContainsAllOf(0, 1, 2, 3, 4, 5, 6);
+  }
 }
