@@ -13,10 +13,11 @@
    See the License for the specific language governing permissions and
    limitations under the License.
  */
- 
+
 package pl.rtshadow.jtriss.column.accessor;
 
 import static java.util.Arrays.asList;
+import static java.util.Collections.EMPTY_LIST;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
@@ -35,6 +36,7 @@ import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import pl.rtshadow.jtriss.column.element.ColumnElement;
+import pl.rtshadow.jtriss.column.element.EmptyListElement;
 import pl.rtshadow.jtriss.column.element.ModifiableColumnElement;
 import pl.rtshadow.jtriss.test.TestColumnElement;
 import pl.rtshadow.jtriss.test.TestFactory;
@@ -45,6 +47,8 @@ public class ListColumnAccessorTest extends AbstractColumnAccessorTest {
   public void setUp() {
     accessorGenerator = generator(Integer.class, constructor);
     accessorGenerator.setFactory(new TestFactory());
+
+    when(column.contains(any(ColumnElement.class))).thenReturn(true);
   }
 
   @SuppressWarnings("unchecked")
@@ -60,8 +64,6 @@ public class ListColumnAccessorTest extends AbstractColumnAccessorTest {
 
   @Test
   public void reconstructsOnlyWhenStartedFromFirst() {
-    when(column.contains(any(ColumnElement.class))).thenReturn(true);
-
     ColumnAccessor<Integer> accessor = accessorGenerator.prepareColumnAccessor();
 
     accessor.prepareMainColumnForReconstruction();
@@ -74,6 +76,16 @@ public class ListColumnAccessorTest extends AbstractColumnAccessorTest {
     accessor.reconstruct(testList().getNextElementInTheRow());
     assertThat(accessor.reconstruct(testList())).isNull();
     accessor.finishReconstruction();
+  }
+
+  @Test
+  public void reconstructsEmptyList() {
+    EmptyListElement emptyListElement = new EmptyListElement();
+    emptyListElement.setColumnId(0);
+    emptyListElement.setNextElement(element(1).inColumn(1));
+
+    ReconstructedObject<Integer> reconstructed = reconstruct(emptyListElement);
+    assertReconstructedContainsOnly(reconstructed.getObject());
   }
 
   @Test
@@ -97,7 +109,7 @@ public class ListColumnAccessorTest extends AbstractColumnAccessorTest {
         element(8).atPosition(2), element(9).inColumn(TEST_COLUMN_ID + 1));
   }
 
-  private ReconstructedObject<Integer> reconstruct(TestColumnElement element) {
+  private ReconstructedObject<Integer> reconstruct(ColumnElement element) {
     ColumnAccessor<Integer> accessor = accessorGenerator.prepareColumnAccessor();
     return accessor.reconstruct(element);
   }
@@ -111,5 +123,14 @@ public class ListColumnAccessorTest extends AbstractColumnAccessorTest {
     assertThat(newElements.getRight()).isEqualTo(element(8).withNext(element(9)));
     verify(constructor).add(chain(element(7), element(8), element(9)));
     verify(constructor).add(element(8).withNext(element(9)));
+  }
+
+  @Test
+  public void addsEmptyList() {
+    Pair<ModifiableColumnElement<Integer>, ModifiableColumnElement<Integer>> newElements =
+        accessorGenerator.insert(EMPTY_LIST, element(9));
+
+    assertThat(newElements.getLeft()).isInstanceOf(EmptyListElement.class);
+    assertThat(newElements.getLeft().getNextElementInTheRow()).isEqualTo(element(9));
   }
 }

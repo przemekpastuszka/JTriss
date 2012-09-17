@@ -27,7 +27,7 @@ import pl.rtshadow.jtriss.row.Row;
 
 public class NullValuesTableTest extends AbstractTableTest {
   @Test
-  public void returnsEmptyResultForAQuery() {
+  public void returnsValidRowWithNulls() {
     List<Integer> listWithNull = new LinkedList<Integer>();
     listWithNull.add(null);
 

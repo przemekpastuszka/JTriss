@@ -23,6 +23,7 @@ import pl.rtshadow.jtriss.column.accessor.ColumnAccessor;
 import pl.rtshadow.jtriss.column.accessor.ColumnAccessorGenerator;
 import pl.rtshadow.jtriss.column.accessor.ListColumnAccessor;
 import pl.rtshadow.jtriss.column.accessor.ScalarColumnAccessor;
+import pl.rtshadow.jtriss.column.element.EmptyListElement;
 import pl.rtshadow.jtriss.column.element.ModifiableColumnElement;
 import pl.rtshadow.jtriss.column.element.StandardColumnElement;
 import pl.rtshadow.jtriss.column.unmodifiable.UnmodifiableColumnConstructor;
@@ -72,5 +73,10 @@ public class StandardFactory implements TrissFactory {
   @Override
   public Table prepareTable(List<ColumnAccessor> columns) {
     return new StandardTable(columns);
+  }
+
+  @Override
+  public <T extends Comparable<? super T>> ModifiableColumnElement<T> createEmptyListElement() {
+    return new EmptyListElement<T>();
   }
 }

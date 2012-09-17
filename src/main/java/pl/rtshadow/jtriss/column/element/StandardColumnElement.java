@@ -13,7 +13,7 @@
    See the License for the specific language governing permissions and
    limitations under the License.
  */
- 
+
 package pl.rtshadow.jtriss.column.element;
 
 public class StandardColumnElement<T extends Comparable<? super T>> extends ModifiableColumnElement<T> {
@@ -26,5 +26,10 @@ public class StandardColumnElement<T extends Comparable<? super T>> extends Modi
   @Override
   public T getValue() {
     return value;
+  }
+
+  @Override
+  public boolean hasValue() {
+    return true;
   }
 }

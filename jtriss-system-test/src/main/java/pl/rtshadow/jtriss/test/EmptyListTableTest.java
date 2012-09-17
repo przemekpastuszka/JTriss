@@ -14,16 +14,23 @@
    limitations under the License.
  */
 
-package pl.rtshadow.jtriss.column.element;
+package pl.rtshadow.jtriss.test;
 
-public interface ColumnElement<T extends Comparable<? super T>> extends Comparable<ColumnElement<T>> {
-  boolean hasValue();
+import static java.util.Collections.emptyList;
+import static pl.rtshadow.jtriss.query.Query.query;
 
-  T getValue();
+import org.junit.Test;
 
-  ColumnElement<T> getNextElementInTheRow();
+import pl.rtshadow.jtriss.row.Row;
 
-  int getPositionInColumn();
+public class EmptyListTableTest extends AbstractTableTest {
+  @Test
+  public void returnsValidRowWithEmptyList() {
+    inputRows.add(new Row(1.0, emptyList(), "s"));
+    prepareTable();
 
-  int getColumnId();
+    select(query());
+
+    assertResultContainsAllOf(0);
+  }
 }

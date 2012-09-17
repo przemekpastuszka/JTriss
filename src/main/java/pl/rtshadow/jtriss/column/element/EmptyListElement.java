@@ -16,14 +16,14 @@
 
 package pl.rtshadow.jtriss.column.element;
 
-public interface ColumnElement<T extends Comparable<? super T>> extends Comparable<ColumnElement<T>> {
-  boolean hasValue();
+public class EmptyListElement<T extends Comparable<? super T>> extends ModifiableColumnElement<T> {
+  @Override
+  public T getValue() {
+    throw new UnsupportedOperationException();
+  }
 
-  T getValue();
-
-  ColumnElement<T> getNextElementInTheRow();
-
-  int getPositionInColumn();
-
-  int getColumnId();
+  @Override
+  public boolean hasValue() {
+    return false;
+  }
 }

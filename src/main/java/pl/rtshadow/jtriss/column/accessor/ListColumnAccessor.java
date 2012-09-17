@@ -13,7 +13,7 @@
    See the License for the specific language governing permissions and
    limitations under the License.
  */
- 
+
 package pl.rtshadow.jtriss.column.accessor;
 
 import static org.apache.commons.lang3.BooleanUtils.negate;
@@ -52,7 +52,10 @@ public class ListColumnAccessor<T extends Comparable<? super T>> extends Abstrac
         }
         hasAnyElementInsideColumn = true;
       }
-      valuesList.add(element.getValue());
+
+      if (element.hasValue()) {
+        valuesList.add(element.getValue());
+      }
       element = element.getNextElementInTheRow();
     }
 
@@ -90,7 +93,7 @@ public class ListColumnAccessor<T extends Comparable<? super T>> extends Abstrac
     @Override
     public Pair<ModifiableColumnElement<T>, ModifiableColumnElement<T>>
         insert(Object object, ColumnElement<T> nextElement) {
-      List<T> valuesList = retrieveNonEmptyListFrom(object);
+      List<T> valuesList = retrieveListFrom(object);
       List<ModifiableColumnElement<T>> columnElements = mapValuesToColumnElements(valuesList);
 
       for (int i = 0; i < columnElements.size() - 1; ++i) {
@@ -110,25 +113,23 @@ public class ListColumnAccessor<T extends Comparable<? super T>> extends Abstrac
 
     private List<ModifiableColumnElement<T>> mapValuesToColumnElements(List<T> valuesList) {
       List<ModifiableColumnElement<T>> columnElements = new ArrayList<ModifiableColumnElement<T>>(valuesList.size());
+
+      if (valuesList.isEmpty()) {
+        columnElements.add((ModifiableColumnElement<T>) factory.createEmptyListElement());
+      }
+
       for (T singleValue : valuesList) {
         columnElements.add(factory.createElement(type, singleValue));
       }
       return columnElements;
     }
 
-    private List<T> retrieveNonEmptyListFrom(Object value) {
+    private List<T> retrieveListFrom(Object value) {
       if (negate(value instanceof List)) {
         throw new IllegalArgumentException("Expected instance of java.util.List, got: " + value.getClass());
       }
 
-      @SuppressWarnings("unchecked")
-      List<T> valuesList = (List<T>) value;
-
-      if (valuesList.isEmpty()) {
-        throw new UnsupportedOperationException("Empty lists are not yet supported");
-      }
-
-      return valuesList;
+      return (List<T>) value;
     }
 
     @Override

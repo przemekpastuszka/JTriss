@@ -13,7 +13,7 @@
    See the License for the specific language governing permissions and
    limitations under the License.
  */
- 
+
 package pl.rtshadow.jtriss.test;
 
 import static pl.rtshadow.jtriss.test.TestColumnElement.element;
@@ -23,6 +23,7 @@ import java.util.List;
 import pl.rtshadow.jtriss.column.ColumnConstructor;
 import pl.rtshadow.jtriss.column.accessor.ColumnAccessor;
 import pl.rtshadow.jtriss.column.accessor.ColumnAccessorGenerator;
+import pl.rtshadow.jtriss.column.element.EmptyListElement;
 import pl.rtshadow.jtriss.column.element.ModifiableColumnElement;
 import pl.rtshadow.jtriss.factory.TrissFactory;
 import pl.rtshadow.jtriss.table.ColumnSet;
@@ -60,5 +61,10 @@ public class TestFactory implements TrissFactory {
   @Override
   public Table prepareTable(List<ColumnAccessor> columns) {
     throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public <T extends Comparable<? super T>> ModifiableColumnElement<T> createEmptyListElement() {
+    return new EmptyListElement<T>();
   }
 }

@@ -13,7 +13,7 @@
    See the License for the specific language governing permissions and
    limitations under the License.
  */
- 
+
 package pl.rtshadow.jtriss.factory;
 
 import java.util.List;
@@ -37,6 +37,9 @@ public interface TrissFactory {
 
   <T extends Comparable<? super T>> ModifiableColumnElement<T>
       createElement(Class<T> type, Object value);
+
+  <T extends Comparable<? super T>> ModifiableColumnElement<T>
+      createEmptyListElement();
 
   ColumnSet createColumnSet(List<ColumnAccessor> columns);
 
