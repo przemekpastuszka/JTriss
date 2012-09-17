@@ -13,7 +13,7 @@
    See the License for the specific language governing permissions and
    limitations under the License.
  */
- 
+
 package pl.rtshadow.jtriss.table;
 
 import static java.util.Arrays.asList;
@@ -89,5 +89,10 @@ public class StandardTableConstructorTest {
     constructor.add(new Row(asList(11, asList(21, 22))));
 
     assertThat(B2.getNextElementInTheRow()).isEqualTo(A1);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void throwsExceptionIfWrongRowGiven() {
+    constructor.add(new Row());
   }
 }

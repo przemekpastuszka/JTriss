@@ -13,7 +13,7 @@
    See the License for the specific language governing permissions and
    limitations under the License.
  */
- 
+
 package pl.rtshadow.jtriss.table;
 
 import java.util.ArrayList;
@@ -44,6 +44,10 @@ public class StandardTableConstructor implements TableConstructor {
   @Override
   public void add(Row row) {
     createColumnGenerators(schema);
+
+    if (row.size() != schema.size()) {
+      throw new IllegalArgumentException("Given row has different number of arguments than schema");
+    }
 
     ModifiableColumnElement nextElement = null;
     ModifiableColumnElement lastElement = null;

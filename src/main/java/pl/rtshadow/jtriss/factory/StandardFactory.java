@@ -13,7 +13,7 @@
    See the License for the specific language governing permissions and
    limitations under the License.
  */
- 
+
 package pl.rtshadow.jtriss.factory;
 
 import java.util.List;
@@ -35,12 +35,16 @@ public class StandardFactory implements TrissFactory {
   public <T extends Comparable<? super T>> ModifiableColumnElement<T>
       createElement(Class<T> type, Object value) {
 
-    T castedValue = type.cast(value);
-    if (castedValue == null) {
-      throw new IllegalArgumentException("Expected instance of " + type + ", got: " + value.getClass());
+    if (value != null) {
+      T castedValue = type.cast(value);
+      if (castedValue == null) {
+        throw new IllegalArgumentException("Expected instance of " + type + ", got: " +
+            value.getClass());
+      }
+      return new StandardColumnElement<T>(castedValue);
     }
 
-    return new StandardColumnElement<T>(castedValue);
+    return new StandardColumnElement<T>(null);
   }
 
   @Override

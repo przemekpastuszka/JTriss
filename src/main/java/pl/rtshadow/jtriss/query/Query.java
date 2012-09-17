@@ -13,7 +13,7 @@
    See the License for the specific language governing permissions and
    limitations under the License.
  */
- 
+
 package pl.rtshadow.jtriss.query;
 
 import java.util.HashMap;
@@ -37,6 +37,10 @@ public class Query {
   }
 
   public Query limit(int limit) {
+    if (limit <= 0) {
+      throw new IllegalArgumentException("Limit must be positive value");
+    }
+
     this.limit = limit;
     return this;
   }

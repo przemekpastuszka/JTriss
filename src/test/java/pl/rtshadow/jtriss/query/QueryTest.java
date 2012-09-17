@@ -77,4 +77,9 @@ public class QueryTest {
     verify(rangeB, never()).intersect(any(ValueRange.class));
     assertThat(q.columnRange).hasSize(1);
   }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void throwsExceptionIfLimitIsNotPositive() {
+    query().limit(0);
+  }
 }
