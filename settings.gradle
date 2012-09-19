@@ -1,1 +1,2 @@
 include 'jtriss-system-test'
+include 'jtriss-benchmark'
