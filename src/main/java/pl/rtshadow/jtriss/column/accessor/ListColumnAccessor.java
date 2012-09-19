@@ -115,7 +115,7 @@ public class ListColumnAccessor<T extends Comparable<? super T>> extends Abstrac
       List<ModifiableColumnElement<T>> columnElements = new ArrayList<ModifiableColumnElement<T>>(valuesList.size());
 
       if (valuesList.isEmpty()) {
-        columnElements.add((ModifiableColumnElement<T>) factory.createEmptyListElement());
+        columnElements.add(factory.<T> createEmptyListElement());
       }
 
       for (T singleValue : valuesList) {
