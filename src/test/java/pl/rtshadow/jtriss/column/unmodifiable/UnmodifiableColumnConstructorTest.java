@@ -13,9 +13,10 @@
    See the License for the specific language governing permissions and
    limitations under the License.
  */
- 
+
 package pl.rtshadow.jtriss.column.unmodifiable;
 
+import static pl.rtshadow.jtriss.column.element.StandardColumnElement.STANDARD_COLUMN_ELEMENT_CMP;
 import static pl.rtshadow.jtriss.test.CommonAssertions.assertTheSameCollection;
 import static pl.rtshadow.jtriss.test.TestColumnElement.element;
 import static pl.rtshadow.jtriss.test.TestObjects.TEST_COLUMN_ID;
@@ -40,10 +41,11 @@ public class UnmodifiableColumnConstructorTest {
 
   @Test(expected = IllegalStateException.class)
   public void cannotGenerateColumnMultipleTimes() {
-    ColumnConstructor<Integer> constructor = UnmodifiableColumnConstructor.<Integer> constructor(TEST_COLUMN_ID);
+    ColumnConstructor<Integer> constructor = UnmodifiableColumnConstructor.<Integer>
+        constructor(TEST_COLUMN_ID);
     constructor.add(element(5));
 
-    constructor.generate();
-    constructor.generate();
+    constructor.generate(STANDARD_COLUMN_ELEMENT_CMP);
+    constructor.generate(STANDARD_COLUMN_ELEMENT_CMP);
   }
 }

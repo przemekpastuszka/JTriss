@@ -13,14 +13,17 @@
    See the License for the specific language governing permissions and
    limitations under the License.
  */
- 
+
 package pl.rtshadow.jtriss.column.accessor;
 
 import static org.mockito.Mockito.when;
 
+import java.util.Comparator;
+
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import pl.rtshadow.jtriss.column.ColumnConstructor;
@@ -36,7 +39,7 @@ public abstract class AbstractColumnAccessorTest {
   ColumnConstructor<Integer> constructor;
 
   @Before
-  public void hasIntegerType() {
-    when(constructor.generate()).thenReturn(column);
+  public void baseSetUp() {
+    when(constructor.generate(Mockito.any(Comparator.class))).thenReturn(column);
   }
 }

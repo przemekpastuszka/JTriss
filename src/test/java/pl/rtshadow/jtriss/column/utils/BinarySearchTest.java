@@ -13,7 +13,7 @@
    See the License for the specific language governing permissions and
    limitations under the License.
  */
- 
+
 package pl.rtshadow.jtriss.column.utils;
 
 import static java.util.Arrays.asList;
@@ -21,6 +21,7 @@ import static org.fest.assertions.Assertions.assertThat;
 import static pl.rtshadow.jtriss.utils.BinarySearch.lowerBound;
 import static pl.rtshadow.jtriss.utils.BinarySearch.upperBound;
 
+import java.util.Comparator;
 import java.util.List;
 
 import org.junit.Test;
@@ -54,14 +55,21 @@ public class BinarySearchTest {
   }
 
   private void assertThatRangeIsEmpty(int leftValue, int rightValue, boolean openRange) {
-    int leftIndex = lowerBound(input, leftValue, openRange);
-    int rightIndex = upperBound(input, rightValue, openRange);
+    int leftIndex = lowerBound(input, leftValue, openRange, INTEGER_CMP);
+    int rightIndex = upperBound(input, rightValue, openRange, INTEGER_CMP);
 
     assertThat(leftIndex).isGreaterThan(rightIndex);
   }
 
   private void assertThatRangeEquals(int leftValue, int rightValue, int leftIndex, int rightIndex, boolean openRange) {
-    assertThat(lowerBound(input, leftValue, openRange)).isEqualTo(leftIndex);
-    assertThat(upperBound(input, rightValue, openRange)).isEqualTo(rightIndex);
+    assertThat(lowerBound(input, leftValue, openRange, INTEGER_CMP)).isEqualTo(leftIndex);
+    assertThat(upperBound(input, rightValue, openRange, INTEGER_CMP)).isEqualTo(rightIndex);
   }
+
+  private static final Comparator<Integer> INTEGER_CMP = new Comparator<Integer>() {
+    @Override
+    public int compare(Integer o1, Integer o2) {
+      return o1.compareTo(o2);
+    }
+  };
 }

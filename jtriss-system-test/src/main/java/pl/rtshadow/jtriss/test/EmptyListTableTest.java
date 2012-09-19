@@ -16,21 +16,35 @@
 
 package pl.rtshadow.jtriss.test;
 
+import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static pl.rtshadow.jtriss.query.Query.query;
+import static pl.rtshadow.jtriss.query.constraint.ContainsConstraint.contains;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import pl.rtshadow.jtriss.row.Row;
 
 public class EmptyListTableTest extends AbstractTableTest {
+  @Before
+  public void setUp() {
+    inputRows.add(new Row(1.0, emptyList(), "s"));
+    inputRows.add(new Row(2.0, asList(0), "x"));
+    prepareTable();
+  }
+
   @Test
   public void returnsValidRowWithEmptyList() {
-    inputRows.add(new Row(1.0, emptyList(), "s"));
-    prepareTable();
-
     select(query());
 
-    assertResultContainsAllOf(0);
+    assertResultContainsAllOf(0, 1);
+  }
+
+  @Test
+  public void returnsOnlyRowWithNonEmptyList() {
+    select(query().and(1, contains(0)));
+
+    assertResultContainsAllOf(1);
   }
 }

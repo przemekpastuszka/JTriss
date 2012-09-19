@@ -13,12 +13,13 @@
    See the License for the specific language governing permissions and
    limitations under the License.
  */
- 
+
 package pl.rtshadow.jtriss.column.unmodifiable;
 
 import static pl.rtshadow.jtriss.utils.BinarySearch.lowerBound;
 import static pl.rtshadow.jtriss.utils.BinarySearch.upperBound;
 
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -30,10 +31,12 @@ import pl.rtshadow.jtriss.common.ValueRange;
 public class UnmodifiableSortedColumn<T extends Comparable<? super T>> implements SortedColumn<T> {
   private final List<ColumnElement<T>> elements;
   private final int id;
+  private final Comparator elementComparator;
 
-  UnmodifiableSortedColumn(List<ColumnElement<T>> elements, int id) {
+  UnmodifiableSortedColumn(List<ColumnElement<T>> elements, int id, Comparator elementComparator) {
     this.elements = elements;
     this.id = id;
+    this.elementComparator = elementComparator;
   }
 
   @Override
@@ -46,13 +49,15 @@ public class UnmodifiableSortedColumn<T extends Comparable<? super T>> implement
     int rightIndex = elements.size() - 1;
 
     if (range.isFiniteOnTheLeft()) {
-      leftIndex = lowerBound(elements, new StandardColumnElement<T>(range.getLeft()), range.isOpenOnTheLeft());
+      leftIndex = lowerBound(elements, new StandardColumnElement<T>(range.getLeft()),
+          range.isOpenOnTheLeft(), elementComparator);
     }
     if (range.isFiniteOnTheRight()) {
-      rightIndex = upperBound(elements, new StandardColumnElement<T>(range.getRight()), range.isOpenOnTheRight());
+      rightIndex = upperBound(elements, new StandardColumnElement<T>(range.getRight()),
+          range.isOpenOnTheRight(), elementComparator);
     }
 
-    return new UnmodifiableSortedColumn<T>(elements.subList(leftIndex, rightIndex + 1), id);
+    return new UnmodifiableSortedColumn<T>(elements.subList(leftIndex, rightIndex + 1), id, elementComparator);
   }
 
   @Override

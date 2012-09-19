@@ -19,6 +19,7 @@ package pl.rtshadow.jtriss.test;
 import static java.util.Arrays.asList;
 import static org.fest.assertions.Assertions.assertThat;
 import static pl.rtshadow.jtriss.query.Query.query;
+import static pl.rtshadow.jtriss.query.constraint.ContainsConstraint.contains;
 import static pl.rtshadow.jtriss.query.constraint.EqualsConstraint.equalsTo;
 import static pl.rtshadow.jtriss.query.constraint.GreaterOrEqualConstraint.greaterOrEqual;
 import static pl.rtshadow.jtriss.query.constraint.LessOrEqualConstraint.lessOrEqual;
@@ -59,14 +60,14 @@ public class SimpleQueriesTest extends AbstractTableTest {
 
   @Test
   public void returnsLastRowForContainsConstraint() {
-    select(query().and(1, equalsTo(10)));
+    select(query().and(1, contains(10)));
 
     assertResultContainsAllOf(3);
   }
 
   @Test
   public void returnsSecondRowForContainsConstraint() {
-    select(query().and(1, equalsTo(7)));
+    select(query().and(1, contains(7)));
 
     assertResultContainsAllOf(1);
   }

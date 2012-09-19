@@ -16,6 +16,8 @@
 
 package pl.rtshadow.jtriss.column.element;
 
+import java.util.Comparator;
+
 public class EmptyListElement<T extends Comparable<? super T>> extends ModifiableColumnElement<T> {
   @Override
   public T getValue() {
@@ -26,4 +28,19 @@ public class EmptyListElement<T extends Comparable<? super T>> extends Modifiabl
   public boolean hasValue() {
     return false;
   }
+
+  private static class EmptyListAwareComparator implements Comparator<ColumnElement> {
+    @Override
+    public int compare(ColumnElement o1, ColumnElement o2) {
+      if (o1 instanceof EmptyListElement) {
+        return -1;
+      }
+      if (o2 instanceof EmptyListElement) {
+        return 1;
+      }
+      return o1.getValue().compareTo(o2.getValue());
+    }
+  }
+
+  public static Comparator<ColumnElement> EMPTY_LIST_AWARE_CMP = new EmptyListAwareComparator();
 }

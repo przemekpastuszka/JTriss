@@ -134,7 +134,7 @@ public class ListColumnAccessor<T extends Comparable<? super T>> extends Abstrac
 
     @Override
     public ColumnAccessor<T> prepareColumnAccessor() {
-      return new ListColumnAccessor<T>(type, constructor.generate());
+      return new ListColumnAccessor<T>(type, constructor.generate(factory.getEmptyListAwareComparator()));
     }
   }
 

@@ -16,6 +16,8 @@
 
 package pl.rtshadow.jtriss.column.element;
 
+import java.util.Comparator;
+
 public class StandardColumnElement<T extends Comparable<? super T>> extends ModifiableColumnElement<T> {
   private final T value;
 
@@ -32,4 +34,13 @@ public class StandardColumnElement<T extends Comparable<? super T>> extends Modi
   public boolean hasValue() {
     return true;
   }
+
+  private static class StandardElementsComparator implements Comparator<ColumnElement> {
+    @Override
+    public int compare(ColumnElement o1, ColumnElement o2) {
+      return o1.getValue().compareTo(o2.getValue());
+    }
+  }
+
+  public static Comparator STANDARD_COLUMN_ELEMENT_CMP = new StandardElementsComparator();
 }

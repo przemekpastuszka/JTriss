@@ -13,10 +13,11 @@
    See the License for the specific language governing permissions and
    limitations under the License.
  */
- 
+
 package pl.rtshadow.jtriss.test;
 
 import static java.util.Arrays.asList;
+import static pl.rtshadow.jtriss.column.element.StandardColumnElement.STANDARD_COLUMN_ELEMENT_CMP;
 import static pl.rtshadow.jtriss.test.TestColumnElement.element;
 
 import java.util.ArrayList;
@@ -36,13 +37,14 @@ public class TestObjects {
   }
 
   public static SortedColumn<Integer> generateSortedColumnFrom(Integer... values) {
-    ColumnConstructor<Integer> constructor = UnmodifiableColumnConstructor.<Integer> constructor(TEST_COLUMN_ID);
+    ColumnConstructor<Integer> constructor = UnmodifiableColumnConstructor.<Integer>
+        constructor(TEST_COLUMN_ID);
 
     for (Integer value : values) {
       constructor.add(element(value));
     }
 
-    return constructor.generate();
+    return constructor.generate(STANDARD_COLUMN_ELEMENT_CMP);
   }
 
   public static List<StandardColumnElement<Integer>> toElementList(Integer... values) {

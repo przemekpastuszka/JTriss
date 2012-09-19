@@ -13,12 +13,11 @@
    See the License for the specific language governing permissions and
    limitations under the License.
  */
- 
+
 package pl.rtshadow.jtriss.utils;
 
-import static pl.rtshadow.jtriss.utils.EqualAlteredComparator.IDENTITY_CMP;
-import static pl.rtshadow.jtriss.utils.EqualAlteredComparator.LEFT_SKEWED_CMP;
-import static pl.rtshadow.jtriss.utils.EqualAlteredComparator.RIGHT_SKEWED_CMP;
+import static pl.rtshadow.jtriss.utils.EqualAlteredComparator.leftSkewedComparator;
+import static pl.rtshadow.jtriss.utils.EqualAlteredComparator.rightSkewedComparator;
 
 import java.util.Comparator;
 import java.util.List;
@@ -28,15 +27,17 @@ public class BinarySearch {
     LEFTMOST, RIGHTMOST
   }
 
-  public static <T extends Comparable<? super T>> int lowerBound(List<T> ls, T value, boolean withOpenRange) {
-    return search(ls, value, SearchType.LEFTMOST, withOpenRange ? LEFT_SKEWED_CMP : IDENTITY_CMP);
+  public static <T> int lowerBound(List<T> ls, T value, boolean withOpenRange, Comparator<T> cmp) {
+    return search(ls, value, SearchType.LEFTMOST,
+        withOpenRange ? leftSkewedComparator(cmp) : cmp);
   }
 
-  public static <T extends Comparable<? super T>> int upperBound(List<T> ls, T value, boolean withOpenRange) {
-    return search(ls, value, SearchType.RIGHTMOST, withOpenRange ? RIGHT_SKEWED_CMP : IDENTITY_CMP);
+  public static <T> int upperBound(List<T> ls, T value, boolean withOpenRange, Comparator<T> cmp) {
+    return search(ls, value, SearchType.RIGHTMOST,
+        withOpenRange ? rightSkewedComparator(cmp) : cmp);
   }
 
-  private static <T extends Comparable<? super T>> int search(List<T> ls, T value, SearchType type, Comparator<T> cmp) {
+  private static <T> int search(List<T> ls, T value, SearchType type, Comparator<T> cmp) {
 
     int p = 0, k = ls.size() - 1;
 

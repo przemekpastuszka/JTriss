@@ -18,7 +18,7 @@ package pl.rtshadow.jtriss.test;
 
 import static java.util.Arrays.asList;
 import static pl.rtshadow.jtriss.query.Query.query;
-import static pl.rtshadow.jtriss.query.constraint.EqualsConstraint.equalsTo;
+import static pl.rtshadow.jtriss.query.constraint.ContainsConstraint.contains;
 import static pl.rtshadow.jtriss.query.constraint.GreaterOrEqualConstraint.greaterOrEqual;
 import static pl.rtshadow.jtriss.query.constraint.LessOrEqualConstraint.lessOrEqual;
 
@@ -45,23 +45,14 @@ public class ComplexQueriesTest extends AbstractTableTest {
   public void returnsFirstRow() {
     select(query().
         and(0, greaterOrEqual(3.0)).
-        and(1, equalsTo(9)));
+        and(1, contains(9)));
 
     assertResultContainsAllOf(0);
   }
 
   @Test
-  public void returnsThirdRow() {
-    select(query().
-        and(1, greaterOrEqual(4)).
-        and(1, lessOrEqual(5)));
-
-    assertResultContainsAllOf(2);
-  }
-
-  @Test
   public void returnsFirstTwoRows() {
-    select(query().and(1, equalsTo(9)));
+    select(query().and(1, contains(9)));
 
     assertResultContainsAllOf(0, 1);
   }
@@ -70,7 +61,7 @@ public class ComplexQueriesTest extends AbstractTableTest {
   public void returnsAnswerForConstraintOnAllColumns() {
     select(query().
         and(0, lessOrEqual(1.7)).
-        and(1, lessOrEqual(0)).
+        and(1, contains(0)).
         and(2, lessOrEqual("s")));
 
     assertResultContainsAllOf(3);

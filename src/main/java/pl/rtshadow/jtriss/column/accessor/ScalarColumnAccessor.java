@@ -13,7 +13,7 @@
    See the License for the specific language governing permissions and
    limitations under the License.
  */
- 
+
 package pl.rtshadow.jtriss.column.accessor;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -65,7 +65,7 @@ public class ScalarColumnAccessor<T extends Comparable<? super T>> extends Abstr
 
     @Override
     public ColumnAccessor<T> prepareColumnAccessor() {
-      return new ScalarColumnAccessor<T>(type, constructor.generate());
+      return new ScalarColumnAccessor<T>(type, constructor.generate(factory.getStandardComparator()));
     }
   }
 

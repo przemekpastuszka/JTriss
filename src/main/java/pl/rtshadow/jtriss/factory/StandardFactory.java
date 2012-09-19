@@ -16,6 +16,10 @@
 
 package pl.rtshadow.jtriss.factory;
 
+import static pl.rtshadow.jtriss.column.element.EmptyListElement.EMPTY_LIST_AWARE_CMP;
+import static pl.rtshadow.jtriss.column.element.StandardColumnElement.STANDARD_COLUMN_ELEMENT_CMP;
+
+import java.util.Comparator;
 import java.util.List;
 
 import pl.rtshadow.jtriss.column.ColumnConstructor;
@@ -23,6 +27,7 @@ import pl.rtshadow.jtriss.column.accessor.ColumnAccessor;
 import pl.rtshadow.jtriss.column.accessor.ColumnAccessorGenerator;
 import pl.rtshadow.jtriss.column.accessor.ListColumnAccessor;
 import pl.rtshadow.jtriss.column.accessor.ScalarColumnAccessor;
+import pl.rtshadow.jtriss.column.element.ColumnElement;
 import pl.rtshadow.jtriss.column.element.EmptyListElement;
 import pl.rtshadow.jtriss.column.element.ModifiableColumnElement;
 import pl.rtshadow.jtriss.column.element.StandardColumnElement;
@@ -61,7 +66,8 @@ public class StandardFactory implements TrissFactory {
   }
 
   @Override
-  public <T extends Comparable<? super T>> ColumnConstructor<T> createColumnConstructor(int id) {
+  public <T extends Comparable<? super T>> ColumnConstructor<T>
+      createColumnConstructor(int id) {
     return UnmodifiableColumnConstructor.<T> constructor(id);
   }
 
@@ -78,5 +84,15 @@ public class StandardFactory implements TrissFactory {
   @Override
   public <T extends Comparable<? super T>> ModifiableColumnElement<T> createEmptyListElement() {
     return new EmptyListElement<T>();
+  }
+
+  @Override
+  public Comparator<ColumnElement> getStandardComparator() {
+    return STANDARD_COLUMN_ELEMENT_CMP;
+  }
+
+  @Override
+  public Comparator<ColumnElement> getEmptyListAwareComparator() {
+    return EMPTY_LIST_AWARE_CMP;
   }
 }

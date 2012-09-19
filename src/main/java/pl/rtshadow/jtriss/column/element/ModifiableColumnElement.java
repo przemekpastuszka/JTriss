@@ -13,7 +13,7 @@
    See the License for the specific language governing permissions and
    limitations under the License.
  */
- 
+
 package pl.rtshadow.jtriss.column.element;
 
 import static org.apache.commons.lang3.builder.ToStringBuilder.reflectionToString;
@@ -48,11 +48,6 @@ public abstract class ModifiableColumnElement<T extends Comparable<? super T>> i
 
   public void setNextElement(ColumnElement<T> nextElement) {
     this.nextElement = nextElement;
-  }
-
-  @Override
-  public int compareTo(ColumnElement<T> other) {
-    return getValue().compareTo(other.getValue());
   }
 
   @Override

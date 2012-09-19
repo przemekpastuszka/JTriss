@@ -13,25 +13,31 @@
    See the License for the specific language governing permissions and
    limitations under the License.
  */
- 
+
 package pl.rtshadow.jtriss.utils;
 
 import java.util.Comparator;
 
-class EqualAlteredComparator<T extends Comparable<? super T>> implements Comparator<T> {
+class EqualAlteredComparator<T> implements Comparator<T> {
   private final int valueForEqual;
+  private final Comparator<T> cmp;
 
-  private EqualAlteredComparator(int valueForEqual) {
+  private EqualAlteredComparator(Comparator<T> cmp, int valueForEqual) {
     this.valueForEqual = valueForEqual;
+    this.cmp = cmp;
   }
 
-  public final static EqualAlteredComparator LEFT_SKEWED_CMP = new EqualAlteredComparator(1);
-  public final static EqualAlteredComparator RIGHT_SKEWED_CMP = new EqualAlteredComparator(-1);
-  public final static EqualAlteredComparator IDENTITY_CMP = new EqualAlteredComparator(0);
+  public static Comparator leftSkewedComparator(Comparator cmp) {
+    return new EqualAlteredComparator(cmp, 1);
+  }
+
+  public static Comparator rightSkewedComparator(Comparator cmp) {
+    return new EqualAlteredComparator(cmp, -1);
+  }
 
   @Override
   public int compare(T o1, T o2) {
-    int comparison = o1.compareTo(o2);
+    int comparison = cmp.compare(o1, o2);
     if (comparison == 0) {
       return valueForEqual;
     }

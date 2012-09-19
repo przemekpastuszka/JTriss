@@ -13,13 +13,14 @@
    See the License for the specific language governing permissions and
    limitations under the License.
  */
- 
+
 package pl.rtshadow.jtriss.column.unmodifiable;
 
 import static java.util.Collections.sort;
 import static java.util.Collections.unmodifiableList;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import pl.rtshadow.jtriss.column.ColumnConstructor;
@@ -36,7 +37,8 @@ public class UnmodifiableColumnConstructor<T extends Comparable<? super T>> impl
     this.id = id;
   }
 
-  public static <T extends Comparable<? super T>> UnmodifiableColumnConstructor<T> constructor(int id) {
+  public static <T extends Comparable<? super T>> UnmodifiableColumnConstructor<T>
+      constructor(int id) {
     return new UnmodifiableColumnConstructor<T>(id);
   }
 
@@ -46,14 +48,14 @@ public class UnmodifiableColumnConstructor<T extends Comparable<? super T>> impl
   }
 
   @Override
-  public SortedColumn<T> generate() {
+  public SortedColumn<T> generate(Comparator<ColumnElement> elementComparator) {
     assureFirstGeneration();
 
-    sort(elements);
+    sort(elements, elementComparator);
     setElementsPositionsAndColumnId(id);
 
     return new UnmodifiableSortedColumn<T>(
-        unmodifiableList(new ArrayList<ColumnElement<T>>(elements)), id);
+        unmodifiableList(new ArrayList<ColumnElement<T>>(elements)), id, elementComparator);
   }
 
   private void setElementsPositionsAndColumnId(int columnId) {

@@ -14,16 +14,15 @@
    limitations under the License.
  */
 
-package pl.rtshadow.jtriss.column.element;
+package pl.rtshadow.jtriss.query.constraint;
 
-public interface ColumnElement<T extends Comparable<? super T>> {
-  boolean hasValue();
 
-  T getValue();
+public class ContainsConstraint<T extends Comparable<? super T>> extends EqualsConstraint<T> {
+  public static <T extends Comparable<? super T>> Constraint<T> contains(T value) {
+    return new ContainsConstraint<T>(value);
+  }
 
-  ColumnElement<T> getNextElementInTheRow();
-
-  int getPositionInColumn();
-
-  int getColumnId();
+  public ContainsConstraint(T value) {
+    super(value);
+  }
 }

@@ -13,13 +13,16 @@
    See the License for the specific language governing permissions and
    limitations under the License.
  */
- 
+
 package pl.rtshadow.jtriss.column;
 
+import java.util.Comparator;
+
+import pl.rtshadow.jtriss.column.element.ColumnElement;
 import pl.rtshadow.jtriss.column.element.ModifiableColumnElement;
 
 public interface ColumnConstructor<T extends Comparable<? super T>> {
   void add(ModifiableColumnElement<T> element);
 
-  SortedColumn<T> generate();
+  SortedColumn<T> generate(Comparator<ColumnElement> elementComparator);
 }
