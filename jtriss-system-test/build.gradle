@@ -1,7 +1,7 @@
 dependencies {
     compile project(":")
     
-    compile 'junit:junit:4.10'
+    compile 'junit:junit:4.11'
     compile 'org.easytesting:fest-assert:1.4'
 }
 
