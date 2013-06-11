@@ -2,7 +2,7 @@
 Active development years: 2012
 
 ## Summary
-Attempt to port TRISS project (github.com/rtshadow/Triss) to Java. Please, refer to TRISS readme for more info.
+Attempt to port TRISS project (http://github.com/rtshadow/Triss) to Java. Please, refer to TRISS readme for more info.
 
 This project was never finished. I did some simplifications to TRISS design while porting and, as it turned out later, that was a bad decision.
 
